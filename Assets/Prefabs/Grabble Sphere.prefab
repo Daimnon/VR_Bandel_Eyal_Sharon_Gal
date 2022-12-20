@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2003381414828926410}
   - component: {fileID: 2003381414828926421}
   - component: {fileID: 2003381414828926414}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Grabble Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
