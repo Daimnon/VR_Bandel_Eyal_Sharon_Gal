@@ -1690,8 +1690,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _pointsToGive: 10
-  _incomingObjectTag:
-  - Throwable
+  _projectileTag: Dor
+  _givePointsOnCollision: 1
+  _givePointsOnClick: 0
+  _givePointsOnTrigger: 0
+  _givePointsOnCondition: 0
 --- !u!1001 &696766663
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4280,7 +4283,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2003381414828926409, guid: babd352de380f2a418aa7693ae6c8781, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 9
+      value: 8.929
       objectReference: {fileID: 0}
     - target: {fileID: 2003381414828926409, guid: babd352de380f2a418aa7693ae6c8781, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4414,8 +4417,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _scoreMode: 0
-  _pointsGivers: []
   _scoreTMP: {fileID: 88328970}
+  _pointsGivers:
+  - {fileID: 642421741}
 --- !u!4 &2145190452
 Transform:
   m_ObjectHideFlags: 0

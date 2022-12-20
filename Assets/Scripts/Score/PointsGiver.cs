@@ -5,14 +5,14 @@ using UnityEngine;
 public class PointsGiver : MonoBehaviour
 {
     [SerializeField] private int _pointsToGive = 0;
-    [SerializeField] private string _trowable = "Throwable";
+    [SerializeField] private string _projectileTag = "Dor";
     [SerializeField] private bool _givePointsOnCollision = true, _givePointsOnClick = false, _givePointsOnTrigger = false, _givePointsOnCondition;
     //[SerializeField] private string[] _incomingObjectTag;
     //[SerializeField] private int[] _pointsPerTag;
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (_givePointsOnCollision && collision.gameObject.CompareTag(_trowable))
+        if (_givePointsOnCollision && collision.gameObject.CompareTag(_projectileTag))
         {
             ScoreManager.Instance.Score += _pointsToGive;
         }
@@ -29,7 +29,7 @@ public class PointsGiver : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (_givePointsOnTrigger && other.gameObject.CompareTag(_trowable))
+        if (_givePointsOnTrigger && other.gameObject.CompareTag(_projectileTag))
         {
             ScoreManager.Instance.Score += _pointsToGive;
         }
