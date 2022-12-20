@@ -11,10 +11,11 @@ public class ScoreManager : MonoBehaviour
 
     [SerializeField] private ScoreMode _scoreMode;
     [SerializeField] private TMPro.TextMeshProUGUI _scoreTMP;
+    [SerializeField] private bool _isScorePerMiniGame = false; // -> last stopped here
     //[SerializeField] private List<Collider[]> _mobsHitColliders;
-    [SerializeField] private List<PointsGiver> _pointsGivers;
+    //[SerializeField] private List<PointsGiver> _pointsGivers;
 
-    private int _score = 0;
+    private int _score = 0, _scorePerMiniGameCounter = 0;
     public int Score { get => _score; set => _score = value; }
 
     private delegate void GameScoreMode();
