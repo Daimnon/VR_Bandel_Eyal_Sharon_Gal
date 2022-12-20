@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ScoreMode { HitDoor }
+public enum ScoreMode { HitDoor, Other, Another, YetAnother }
 
 public class ScoreManager : MonoBehaviour
 {
@@ -33,29 +33,37 @@ public class ScoreManager : MonoBehaviour
 
     private void HitDorScoreMode()
     {
-
+        ValidateScoreMode(ScoreMode.HitDoor);
     }
     private void OtherScoreMode()
     {
-
+        ValidateScoreMode(ScoreMode.Other);
     }
     private void AnotherScoreMode()
     {
-
+        ValidateScoreMode(ScoreMode.Another);
     }
     private void YetAnotherScoreMode()
     {
-
+        ValidateScoreMode(ScoreMode.YetAnother);
     }
 
     public void ChangeGameScoreMode(int ScoreModeValue)
     {
         ScoreMode desiredScoreMode = (ScoreMode)ScoreModeValue;
-
         switch (desiredScoreMode)
         {
             case ScoreMode.HitDoor:
                 _currentGameScoreMode = HitDorScoreMode;
+                break;
+            case ScoreMode.Other:
+                _currentGameScoreMode = OtherScoreMode;
+                break;
+            case ScoreMode.Another:
+                _currentGameScoreMode = AnotherScoreMode;
+                break;
+            case ScoreMode.YetAnother:
+                _currentGameScoreMode = YetAnotherScoreMode;
                 break;
             default:
                 _currentGameScoreMode = HitDorScoreMode;
@@ -64,5 +72,12 @@ public class ScoreManager : MonoBehaviour
 
         _scoreMode = desiredScoreMode;
         return;
+    }
+    private void ValidateScoreMode(ScoreMode scoreMode)
+    {
+        if (_scoreMode != scoreMode)
+        {
+            ChangeGameScoreMode((int)_scoreMode);
+        }
     }
 }
