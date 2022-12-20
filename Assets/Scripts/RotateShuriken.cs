@@ -7,10 +7,8 @@ public class RotateShuriken : MonoBehaviour
     [SerializeField] private Rigidbody _shurikenRb;
     [SerializeField] private float _speed;
 
-
     private void Update()
     {
-        
         transform.Rotate(new Vector3(0f, _speed * Time.deltaTime, 0f));
     }
 
