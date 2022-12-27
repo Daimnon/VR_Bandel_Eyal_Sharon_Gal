@@ -32,23 +32,6 @@ public class ScoreManager : MonoBehaviour
         _scoreTMP.text = _score.ToString();
     }
 
-    private void LobbyScoreMode()
-    {
-        ValidateScoreMode(ScoreMode.HitDoor);
-    }
-    private void OtherScoreMode()
-    {
-        ValidateScoreMode(ScoreMode.Other);
-    }
-    private void AnotherScoreMode()
-    {
-        ValidateScoreMode(ScoreMode.Another);
-    }
-    private void YetAnotherScoreMode()
-    {
-        ValidateScoreMode(ScoreMode.YetAnother);
-    }
-
     public void ChangeGameScoreMode(int ScoreModeValue)
     {
         ScoreMode desiredScoreMode = (ScoreMode)ScoreModeValue;
@@ -74,6 +57,26 @@ public class ScoreManager : MonoBehaviour
         _scoreMode = desiredScoreMode;
         return;
     }
+
+    #region ScoreModes
+    private void LobbyScoreMode()
+    {
+        ValidateScoreMode(ScoreMode.HitDoor);
+    }
+    private void OtherScoreMode()
+    {
+        ValidateScoreMode(ScoreMode.Other);
+    }
+    private void AnotherScoreMode()
+    {
+        ValidateScoreMode(ScoreMode.Another);
+    }
+    private void YetAnotherScoreMode()
+    {
+        ValidateScoreMode(ScoreMode.YetAnother);
+    }
+    #endregion
+
     private void ValidateScoreMode(ScoreMode scoreMode)
     {
         if (_scoreMode != scoreMode)
