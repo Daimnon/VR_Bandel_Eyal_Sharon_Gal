@@ -4279,7 +4279,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2003381414828926409, guid: babd352de380f2a418aa7693ae6c8781, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.595
+      value: -0.59500027
       objectReference: {fileID: 0}
     - target: {fileID: 2003381414828926409, guid: babd352de380f2a418aa7693ae6c8781, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4418,8 +4418,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _scoreMode: 0
   _scoreTMP: {fileID: 88328970}
-  _pointsGivers:
-  - {fileID: 642421741}
+  _isScorePerMiniGame: 0
 --- !u!4 &2145190452
 Transform:
   m_ObjectHideFlags: 0

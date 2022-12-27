@@ -24,7 +24,7 @@ public class ScoreManager : MonoBehaviour
     private void Awake()
     {
         _instance = this;
-        _currentGameScoreMode = HitDorScoreMode;
+        _currentGameScoreMode = LobbyScoreMode;
     }
     private void Update()
     {
@@ -32,7 +32,7 @@ public class ScoreManager : MonoBehaviour
         _scoreTMP.text = _score.ToString();
     }
 
-    private void HitDorScoreMode()
+    private void LobbyScoreMode()
     {
         ValidateScoreMode(ScoreMode.HitDoor);
     }
@@ -55,7 +55,7 @@ public class ScoreManager : MonoBehaviour
         switch (desiredScoreMode)
         {
             case ScoreMode.HitDoor:
-                _currentGameScoreMode = HitDorScoreMode;
+                _currentGameScoreMode = LobbyScoreMode;
                 break;
             case ScoreMode.Other:
                 _currentGameScoreMode = OtherScoreMode;
@@ -67,7 +67,7 @@ public class ScoreManager : MonoBehaviour
                 _currentGameScoreMode = YetAnotherScoreMode;
                 break;
             default:
-                _currentGameScoreMode = HitDorScoreMode;
+                _currentGameScoreMode = LobbyScoreMode;
                 break;
         }
 

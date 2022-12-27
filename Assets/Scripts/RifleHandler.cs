@@ -3,17 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+public enum RifleType { Regular, Super, Pompa }
+
 public class RifleHandler : MonoBehaviour
 {
-    public InputActionProperty LeftpinchAnimationAction;
-    public InputActionProperty RightpinchAnimationAction;
-    [SerializeField] GameObject _bulletPrefab;
+    [SerializeField] GameObject _bulletPrefab, _bulletContainer;
     [SerializeField] Transform _bulletSpawnPoint;
-    [SerializeField] GameObject _bulletContainer;
-    [SerializeField] bool _isSuperRifle;
-    bool _isEquiped = false;
-    bool _canFire = false;
+    [SerializeField] RifleType _rifleType;
+    [SerializeField] Material _grappleMat;
+    [SerializeField] float _grappleOriginWidth, _grappleEndWidth;
+    
+    public InputActionProperty LeftpinchAnimationAction, RightpinchAnimationAction;
     public float BulletSpeedMultiplier;
+    
+    private LineRenderer _lineRenderer;
+    private bool _isEquiped = false;
+    private bool _canFire = false;
+    
     private void Update()
     {
         Debug.Log($"{LeftpinchAnimationAction.action.ReadValue<float>()}");
@@ -23,18 +29,47 @@ public class RifleHandler : MonoBehaviour
         {
             if (_isEquiped && _canFire)
             {
-                if (_isSuperRifle)
+                switch (_rifleType)
                 {
-                    SuperFire();
-                }
-                else
-                {
-                Fire();
+                    case RifleType.Regular:
+                        Fire();
+                        break;
+                    case RifleType.Super:
+                        SuperFire();
+                        break;
+                    case RifleType.Pompa:
+                        PompaFire();
+                        break;
+                    default:
+                        break;
                 }
             }
         }
     }
 
+    private void PompaFire()
+    {
+        GameObject projectile = Instantiate(_bulletPrefab, _bulletSpawnPoint.position, Quaternion.identity, _bulletContainer.transform);
+        projectile.GetComponent<Rigidbody>().AddForce(this.transform.up.normalized * BulletSpeedMultiplier, ForceMode.Impulse);
+
+        projectile.AddComponent<LineRenderer>();
+        _lineRenderer = projectile.GetComponent<LineRenderer>();
+
+        _lineRenderer.material = _grappleMat;
+        _lineRenderer.startWidth = _grappleStartWidth;
+        _lineRenderer.endWidth = _grappleEndWidth;
+
+        // Set Line -------------------------------
+        Vector3[] lrPositions = new Vector3[2];
+        lrPositions[0] = _leftGrappleOriginTr.position;
+        lrPositions[1] = hit.point;
+        _lineRenderer.SetPositions(lrPositions);
+        // ----------------------------------------
+        _lin
+
+
+
+    }
     private void SuperFire()
     {
         var firedBullet = Instantiate(_bulletPrefab, _bulletSpawnPoint.position, Quaternion.identity, _bulletContainer.transform);
@@ -43,8 +78,8 @@ public class RifleHandler : MonoBehaviour
     }
     private void Fire()
     {
-
-        var firedBullet = Instantiate(_bulletPrefab, _bulletSpawnPoint.position, Quaternion.identity, _bulletContainer.transform);
+        GameObject firedBullet = Instantiate(_bulletPrefab, _bulletSpawnPoint.position, Quaternion.identity, _bulletContainer.transform);
+        firedBullet.GetComponent<Rigidbody>().AddForce(this.transform.up.normalized * BulletSpeedMultiplier, ForceMode.Impulse);
     }
     public void GrabbedRifle()
     {
