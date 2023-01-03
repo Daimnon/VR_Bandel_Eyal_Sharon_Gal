@@ -951,12 +951,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 328635779}
     - target: {fileID: 4861946948860571223, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
+      propertyPath: _bulletOriginTr
+      value: 
+      objectReference: {fileID: 328635779}
+    - target: {fileID: 4861946948860571223, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
       propertyPath: _bulletContainer
       value: 
       objectReference: {fileID: 612005071}
     - target: {fileID: 4861946948860571223, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
       propertyPath: _grappleEndWidth
-      value: 1
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 4861946948860571223, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
       propertyPath: _bulletSpawnPoint
@@ -964,11 +968,15 @@ PrefabInstance:
       objectReference: {fileID: 328635779}
     - target: {fileID: 4861946948860571223, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
       propertyPath: _grappleStartWidth
-      value: 1
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 4861946948860571223, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
       propertyPath: BulletSpeedMultiplier
       value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 7435438120478815900, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
+      propertyPath: m_Name
+      value: BulletOrigin
       objectReference: {fileID: 0}
     - target: {fileID: 7435438120478815900, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
       propertyPath: m_Layer
@@ -3078,6 +3086,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4861946948860571223, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
+      propertyPath: _bulletOriginTr
+      value: 
+      objectReference: {fileID: 1275730296}
+    - target: {fileID: 4861946948860571223, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
       propertyPath: _bulletContainer
       value: 
       objectReference: {fileID: 612005071}
@@ -4860,6 +4872,10 @@ PrefabInstance:
       propertyPath: _bulletPrefab
       value: 
       objectReference: {fileID: 2003381414828926420, guid: babd352de380f2a418aa7693ae6c8781, type: 3}
+    - target: {fileID: 4861946948860571223, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
+      propertyPath: _bulletOriginTr
+      value: 
+      objectReference: {fileID: 9163662495790841906}
     - target: {fileID: 4861946948860571223, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
       propertyPath: _bulletContainer
       value: 

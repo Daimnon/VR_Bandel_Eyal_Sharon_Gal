@@ -8,7 +8,7 @@ public enum RifleType { Regular, Super, Pompa }
 public class RifleHandler : MonoBehaviour
 {
     [SerializeField] GameObject _bulletPrefab, _bulletContainer;
-    [SerializeField] Transform _bulletOriginTr;
+    [SerializeField] Transform _bulletOriginTr, _bulletPos;
     [SerializeField] RifleType _rifleType;
     [SerializeField] Material _grappleMat;
     [SerializeField] float _grappleStartWidth, _grappleEndWidth;
@@ -139,7 +139,7 @@ public class RifleHandler : MonoBehaviour
         {
             if (_lineRenderer)
             {
-                _lineRenderer.SetPosition(0, _bulletOriginTr.position);
+                _lineRenderer.SetPosition(_bulletOriginTr, _bulletOriginTr.position);
             }
             else
             {
