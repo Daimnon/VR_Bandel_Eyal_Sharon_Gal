@@ -20,10 +20,17 @@ public class GameSystemsManager : MonoBehaviour
         Instance = this;
     }
 
-    public void StartMiniGame(GameScore startedMiniGame)
+    private void Update()
     {
-        selectedGame = startedMiniGame;
-        OnMiniGameStarted?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void TryStartMiniGame(GameScore miniGameToStart)
+    {
+        if (selectedGame != null && !selectedGame.IsGameActive())
+        {
+            selectedGame = miniGameToStart;
+            OnMiniGameStarted?.Invoke(this, EventArgs.Empty);
+        }
     }
 
 }
