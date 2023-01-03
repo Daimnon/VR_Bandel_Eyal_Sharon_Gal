@@ -66,7 +66,7 @@ public class RifleHandler : MonoBehaviour
         switch (_rifleType)
         {
             case RifleType.Regular:
-                Fire();
+                NormalFireDown();
                 break;
             case RifleType.Super:
                 return;
@@ -189,7 +189,7 @@ public class RifleHandler : MonoBehaviour
     #endregion
 
     #region Fire Behavior
-    private void Fire()
+    private void NormalFireDown()
     {
         GameObject firedBullet = Instantiate(_bulletPrefab, _bulletOriginTr.position, Quaternion.identity, _bulletContainer.transform);
     }
