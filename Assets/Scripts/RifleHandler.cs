@@ -7,18 +7,18 @@ public enum RifleType { Regular, Super, Pompa }
 
 public class RifleHandler : MonoBehaviour
 {
-    [SerializeField] GameObject _bulletPrefab, _bulletContainer;
-    [SerializeField] Transform _bulletOriginTr, _bulletPos;
-    [SerializeField] RifleType _rifleType;
-    [SerializeField] Material _grappleMat;
-    [SerializeField] float _grappleStartWidth, _grappleEndWidth;
+    [SerializeField] private GameObject _bulletPrefab, _bulletContainer;
+    [SerializeField] private Transform _bulletOriginTr;
+    [SerializeField] private RifleType _rifleType;
+    [SerializeField] private Material _grappleMat;
+    [SerializeField] private float _grappleStartWidth, _grappleEndWidth;
+    
+    private Transform _bulletTr;
+    private LineRenderer _lineRenderer;
+    private bool _isEquiped = false, _canFire = false, _pompaLive = false;
     
     public InputActionProperty LeftpinchAnimationAction, RightpinchAnimationAction;
     public float BulletSpeedMultiplier;
-    
-    private LineRenderer _lineRenderer;
-    private bool _isEquiped = false, _canFire = false, _pompaLive = false;
-    private Vector3 _lastAnchoredPos = Vector3.up, _lastAnchoredDir = Vector3.zero;
 
     #region MonoBehaviour Callbacks
     private void Update()
@@ -70,7 +70,7 @@ public class RifleHandler : MonoBehaviour
             case RifleType.Super:
                 return;
             case RifleType.Pompa:
-                PompaFire();
+                PompaFireDown();
                 break;
             default:
                 break;
@@ -86,7 +86,7 @@ public class RifleHandler : MonoBehaviour
                 SuperFire();
                 break;
             case RifleType.Pompa:
-                AdjustLineRendererToBullet();
+                PompaFire();
                 break;
             default:
                 break;
@@ -101,7 +101,7 @@ public class RifleHandler : MonoBehaviour
             case RifleType.Super:
                 return;
             case RifleType.Pompa:
-                ReleasePompa();
+                PompaFireUp();
                 break;
             default:
                 break;
@@ -110,7 +110,7 @@ public class RifleHandler : MonoBehaviour
     #endregion
 
     #region Pompa Behavior
-    private void PompaFire()
+    private void PompaFireDown()
     {
         GameObject projectile = Instantiate(_bulletPrefab, _bulletOriginTr.position, Quaternion.identity, _bulletContainer.transform);
         projectile.GetComponent<Rigidbody>().AddForce(this.transform.up.normalized * BulletSpeedMultiplier, ForceMode.Impulse);
@@ -128,18 +128,18 @@ public class RifleHandler : MonoBehaviour
         lrPositions[0] = _bulletOriginTr.position;
         lrPositions[1] = projectile.transform.position;
         _lineRenderer.SetPositions(lrPositions);
-        _bulletOriginTr = projectile.transform;
+        _bulletTr = projectile.transform;
         // ----------------------------------------
 
         _pompaLive = true;
     }
-    private void AdjustLineRendererToBullet()
+    private void PompaFire()
     {
         if (_pompaLive)
         {
             if (_lineRenderer)
             {
-                _lineRenderer.SetPosition(_bulletOriginTr, _bulletOriginTr.position);
+                _lineRenderer.SetPosition(0, _bulletTr.position);
             }
             else
             {
@@ -148,11 +148,10 @@ public class RifleHandler : MonoBehaviour
             }
         }
     }
-    private void ReleasePompa()
+    private void PompaFireUp()
     {
-        _lastAnchoredPos = Vector3.up;
-        _lastAnchoredDir = Vector3.zero;
-    
+        _pompaLive = false;
+
         if (_lineRenderer)
             Destroy(_lineRenderer.gameObject);
     }
