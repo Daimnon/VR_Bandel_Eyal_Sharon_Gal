@@ -1010,6 +1010,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 9163662497386519652, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
+      propertyPath: m_TagString
+      value: Rifle
+      objectReference: {fileID: 0}
     - target: {fileID: 9163662497386519656, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -3137,6 +3141,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 9163662497386519652, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
+      propertyPath: m_TagString
+      value: Rifle
+      objectReference: {fileID: 0}
     - target: {fileID: 9163662497386519654, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -4927,6 +4935,10 @@ PrefabInstance:
     - target: {fileID: 9163662497386519652, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9163662497386519652, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
+      propertyPath: m_TagString
+      value: Rifle
       objectReference: {fileID: 0}
     - target: {fileID: 9163662497386519656, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
       propertyPath: m_RootOrder
