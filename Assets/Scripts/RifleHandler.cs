@@ -7,12 +7,13 @@ public enum RifleType { Regular, Super, Pompa }
 
 public class RifleHandler : MonoBehaviour
 {
-    [SerializeField] private GameObject _bulletPrefab, _bulletContainer;
+    [SerializeField] private GameObject _bulletPrefab, _pompaBullet, _bulletContainer;
     [SerializeField] private Transform _bulletOriginTr;
     [SerializeField] private RifleType _rifleType;
     [SerializeField] private Material _grappleMat;
-    [SerializeField] private float _grappleStartWidth, _grappleEndWidth;
+    [SerializeField] private float _maxPompaDistance = 20f, _pompaStartWidth = 0.25f, _pompaEndWidth = 0.25f;
     
+    private GameObject _pompaCurrentProjectile;
     private Transform _bulletTr;
     private LineRenderer _lineRenderer;
     private bool _isEquiped = false, _canFire = false, _pompaLive = false;
@@ -112,23 +113,23 @@ public class RifleHandler : MonoBehaviour
     #region Pompa Behavior
     private void PompaFireDown()
     {
-        GameObject projectile = Instantiate(_bulletPrefab, _bulletOriginTr.position, Quaternion.identity, _bulletContainer.transform);
-        projectile.GetComponent<Rigidbody>().AddForce(this.transform.up.normalized * BulletSpeedMultiplier, ForceMode.Impulse);
+        _pompaCurrentProjectile = Instantiate(_pompaBullet, _bulletOriginTr.position, Quaternion.identity, _bulletContainer.transform);
+        _pompaCurrentProjectile.GetComponent<Rigidbody>().AddForce(this.transform.up.normalized * BulletSpeedMultiplier, ForceMode.Impulse);
 
         // Initialize Line -------------------------------
-        projectile.AddComponent<LineRenderer>();
-        _lineRenderer = projectile.GetComponent<LineRenderer>();
+        _pompaCurrentProjectile.AddComponent<LineRenderer>();
+        _lineRenderer = _pompaCurrentProjectile.GetComponent<LineRenderer>();
         _lineRenderer.material = _grappleMat;
-        _lineRenderer.startWidth = _grappleStartWidth;
-        _lineRenderer.endWidth = _grappleEndWidth;
+        _lineRenderer.startWidth = _pompaStartWidth;
+        _lineRenderer.endWidth = _pompaEndWidth;
         // ----------------------------------------
 
         // Set Line -------------------------------
         Vector3[] lrPositions = new Vector3[2];
         lrPositions[0] = _bulletOriginTr.position;
-        lrPositions[1] = projectile.transform.position;
+        lrPositions[1] = _pompaCurrentProjectile.transform.position;
         _lineRenderer.SetPositions(lrPositions);
-        _bulletTr = projectile.transform;
+        _bulletTr = _pompaCurrentProjectile.transform;
         // ----------------------------------------
 
         _pompaLive = true;
@@ -139,7 +140,10 @@ public class RifleHandler : MonoBehaviour
         {
             if (_lineRenderer)
             {
-                _lineRenderer.SetPosition(0, _bulletTr.position);
+                Vector3[] lrPositions = new Vector3[2];
+                lrPositions[0] = _bulletOriginTr.position;
+                lrPositions[1] = _bulletTr.position;
+                _lineRenderer.SetPositions(lrPositions);
             }
             else
             {
@@ -150,10 +154,28 @@ public class RifleHandler : MonoBehaviour
     }
     private void PompaFireUp()
     {
-        _pompaLive = false;
-
-        if (_lineRenderer)
-            Destroy(_lineRenderer.gameObject);
+        if (Vector3.Distance(_bulletTr.position, _bulletOriginTr.position) > _maxPompaDistance)
+        {
+            if (_lineRenderer)
+            {
+                Vector3[] lrPositions = new Vector3[2];
+                lrPositions[0] = _bulletOriginTr.position;
+                lrPositions[1] = _bulletTr.position;
+                _lineRenderer.SetPositions(lrPositions);
+            }
+            else
+            {
+                Debug.Log("No LineRenderer");
+                return;
+            }
+        }
+        else
+        {
+            Destroy(_pompaCurrentProjectile);
+            Destroy(_lineRenderer);
+            _pompaCurrentProjectile = null;
+            _lineRenderer = null;
+        }
     }
     #endregion
 

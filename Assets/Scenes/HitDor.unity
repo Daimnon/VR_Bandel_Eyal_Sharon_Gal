@@ -941,7 +941,11 @@ PrefabInstance:
     - target: {fileID: 4861946948860571223, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
       propertyPath: _grappleMat
       value: 
-      objectReference: {fileID: 2100000, guid: cdc4577a3a4b3a14a965dcb6ff1ffe86, type: 2}
+      objectReference: {fileID: 2100000, guid: 2c8beaa54ac217c4b944c54292ffe63b, type: 2}
+    - target: {fileID: 4861946948860571223, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
+      propertyPath: _pompaBullet
+      value: 
+      objectReference: {fileID: 8756671319498829598, guid: 925ce0c2bdc3f1d43a10e3af558c55d9, type: 3}
     - target: {fileID: 4861946948860571223, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
       propertyPath: _bulletPrefab
       value: 
@@ -950,6 +954,10 @@ PrefabInstance:
       propertyPath: _grappleOrigin
       value: 
       objectReference: {fileID: 328635779}
+    - target: {fileID: 4861946948860571223, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
+      propertyPath: _pompaEndWidth
+      value: 0.25
+      objectReference: {fileID: 0}
     - target: {fileID: 4861946948860571223, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
       propertyPath: _bulletOriginTr
       value: 
@@ -963,9 +971,17 @@ PrefabInstance:
       value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 4861946948860571223, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
+      propertyPath: _pompaStartWidth
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 4861946948860571223, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
       propertyPath: _bulletSpawnPoint
       value: 
       objectReference: {fileID: 328635779}
+    - target: {fileID: 4861946948860571223, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
+      propertyPath: _maxPompaDistance
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 4861946948860571223, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
       propertyPath: _grappleStartWidth
       value: 0.25
@@ -3078,6 +3094,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4861946948860571223, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
+      propertyPath: _pompaBullet
+      value: 
+      objectReference: {fileID: 8756671319498829598, guid: 925ce0c2bdc3f1d43a10e3af558c55d9, type: 3}
+    - target: {fileID: 4861946948860571223, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
       propertyPath: _bulletPrefab
       value: 
       objectReference: {fileID: 2003381414828926420, guid: babd352de380f2a418aa7693ae6c8781, type: 3}
@@ -4868,6 +4888,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1153797869}
     m_Modifications:
+    - target: {fileID: 4861946948860571223, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
+      propertyPath: _pompaBullet
+      value: 
+      objectReference: {fileID: 8756671319498829598, guid: 925ce0c2bdc3f1d43a10e3af558c55d9, type: 3}
     - target: {fileID: 4861946948860571223, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
       propertyPath: _bulletPrefab
       value: 
