@@ -7,9 +7,11 @@ public class DorBasketRunScore : GameScore
 {
     public static DorBasketRunScore Instance { get; private set; }
 
-    [SerializeField] private Transform dorShootingPoint;
+    [SerializeField] float timeBetweenShots = 10f;
+    //[SerializeField] private Transform shootingPoint;
 
     private List<GameObject> dorHolder = new List<GameObject>();
+    private WaitForSeconds waitTimeBetweenShots;
 
     private void Awake()
     {
@@ -19,10 +21,9 @@ public class DorBasketRunScore : GameScore
         Instance = this;
     }
 
-    private void Update()
+    private void Start()
     {
-
-
+        waitTimeBetweenShots = new WaitForSeconds(timeBetweenShots);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -31,23 +32,36 @@ public class DorBasketRunScore : GameScore
         {
             if (!isActive)
             {
-                isActive = true;
-                GameSystemsManager.Instance.StartMiniGame(this);
+                GameSystemsManager.Instance.TryStartMiniGame(this);
             }
 
             dorHolder.Add(other.gameObject);
             playerScore++;
         }
         print($"{playerScore}, {dorHolder[dorHolder.Count - 1]}");
+        Destroy(other);
     }
 
-    public override void GameSystemsManager_OnMiniGameStarted(object sender, EventArgs e)
+    private void Update()
     {
-        base.GameSystemsManager_OnMiniGameStarted(sender, e);
+        if (isActive)
+        {
+            if (dorHolder.Count >= 5)
+                StartCoroutine(ShootAllAmmo());
+        }
     }
 
-    public override void GameSystemsManager_OnMiniGameEnded(object sender, EventArgs e)
+
+    protected override void GameSetUp()
     {
-        base.GameSystemsManager_OnMiniGameStarted(sender, e);
+
     }
+
+    private IEnumerator ShootAllAmmo()
+    {
+
+        yield return waitTimeBetweenShots;
+
+    }
+
 }
