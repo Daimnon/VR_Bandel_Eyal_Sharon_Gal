@@ -7,10 +7,9 @@ using System;
 public class GameSystemsManager : MonoBehaviour
 {
     public static GameSystemsManager Instance { get; private set; }
-    public event EventHandler OnMiniGameStarted;
-    public event EventHandler OnMiniGameEnded;
+    public event EventHandler OnAnyMiniGameStarted;
 
-    private GameScore selectedGame;
+    private MiniGame selectedGame;
 
     private void Awake()
     {
@@ -20,16 +19,13 @@ public class GameSystemsManager : MonoBehaviour
         Instance = this;
     }
 
-    private void Update()
+    public void TryStartMiniGame(MiniGame miniGameToStart)
     {
-    }
-
-    public void TryStartMiniGame(GameScore miniGameToStart)
-    {
-        if (selectedGame != null && !selectedGame.IsGameActive())
+        if (selectedGame == null || !selectedGame.GetIsActive())
         {
             selectedGame = miniGameToStart;
-            OnMiniGameStarted?.Invoke(this, EventArgs.Empty);
+            selectedGame.StartMiniGame();
+            OnAnyMiniGameStarted?.Invoke(this, EventArgs.Empty);
         }
     }
 

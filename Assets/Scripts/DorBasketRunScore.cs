@@ -3,14 +3,15 @@ using System.Collections;
 using UnityEngine;
 using System;
 
-public class DorBasketRunScore : GameScore
+public class DorBasketRunScore : MiniGame
 {
     public static DorBasketRunScore Instance { get; private set; }
 
-    [SerializeField] float timeBetweenShots = 10f;
-    //[SerializeField] private Transform shootingPoint;
+    [SerializeField] float timeBetweenShots = 2f;
+    [SerializeField] private Transform shootingPoint;
+    [SerializeField] private Transform gameContainerTransform;
 
-    private List<GameObject> dorHolder = new List<GameObject>();
+    private List<Transform> gameContainer = new List<Transform>();
     private WaitForSeconds waitTimeBetweenShots;
 
     private void Awake()
@@ -24,43 +25,47 @@ public class DorBasketRunScore : GameScore
     private void Start()
     {
         waitTimeBetweenShots = new WaitForSeconds(timeBetweenShots);
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Dor"))
-        {
-            if (!isActive)
-            {
-                GameSystemsManager.Instance.TryStartMiniGame(this);
-            }
-
-            dorHolder.Add(other.gameObject);
-            playerScore++;
-        }
-        print($"{playerScore}, {dorHolder[dorHolder.Count - 1]}");
-        Destroy(other);
+        SetIsActive(true);
     }
 
     private void Update()
     {
-        if (isActive)
+        if (!GetIsActive())
+            return;
+
+        if (gameContainer.Count >= 5)
         {
-            if (dorHolder.Count >= 5)
-                StartCoroutine(ShootAllAmmo());
+            SetIsActive(false);
+            StartCoroutine(ShootAllAmmo());
         }
     }
 
-
-    protected override void GameSetUp()
+    private void OnTriggerEnter(Collider other)
     {
+        if (other.gameObject.CompareTag("Dor"))
+        {
+            if (!GetIsActive())
+                GameSystemsManager.Instance.TryStartMiniGame(this);
 
+            gameContainer.Add(other.transform);
+
+            IncreaseScoreBy(1);
+            other.transform.position = gameContainerTransform.position;
+        }
+        print($"Score:{GetPlayerScore()}, Contains: {gameContainer[gameContainer.Count]} items");
     }
 
     private IEnumerator ShootAllAmmo()
     {
-
-        yield return waitTimeBetweenShots;
+        int i = 0;
+        foreach (var dor in gameContainer)
+        {
+            dor.transform.position = shootingPoint.position;
+            yield return waitTimeBetweenShots;
+            //shoot
+            i++;
+            print(i + "shot");
+        }
 
     }
 
