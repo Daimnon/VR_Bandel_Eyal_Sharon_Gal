@@ -52,21 +52,23 @@ public class DorBasketRunScore : MiniGame
             IncreaseScoreBy(1);
             other.transform.position = gameContainerTransform.position;
         }
-        print($"Score:{GetPlayerScore()}, Contains: {gameContainer[gameContainer.Count]} items");
+        //print($"Score:{GetPlayerScore()}, Contains: {gameContainer[gameContainer.Count]} items");
     }
 
     private IEnumerator ShootAllAmmo()
     {
-        int i = 0;
+        List<Transform> listToRemove = new List<Transform>();
+
         foreach (var dor in gameContainer)
         {
             dor.transform.position = shootingPoint.position;
             yield return waitTimeBetweenShots;
-            //shoot
-            i++;
-            print(i + "shot");
+            listToRemove.Add(dor);
+            //add force
         }
 
+        foreach (var dor in listToRemove)
+            gameContainer.Remove(dor);
     }
 
 }
