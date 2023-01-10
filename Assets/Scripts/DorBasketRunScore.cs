@@ -25,7 +25,6 @@ public class DorBasketRunScore : MiniGame
     private void Start()
     {
         waitTimeBetweenShots = new WaitForSeconds(timeBetweenShots);
-        SetIsActive(true);
     }
 
     private void Update()
