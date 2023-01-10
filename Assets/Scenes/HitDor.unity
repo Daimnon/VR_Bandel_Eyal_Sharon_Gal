@@ -964,7 +964,7 @@ PrefabInstance:
       objectReference: {fileID: 328635779}
     - target: {fileID: 4861946948860571223, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
       propertyPath: _pompaPullSpeed
-      value: 1000
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 4861946948860571223, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
       propertyPath: _bulletContainer

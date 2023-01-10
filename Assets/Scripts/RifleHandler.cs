@@ -11,17 +11,15 @@ public class RifleHandler : MonoBehaviour
     [SerializeField] private Transform _bulletOriginTr;
     [SerializeField] private RifleType _rifleType;
     [SerializeField] private Material _grappleMat;
-    [SerializeField] private float _maxPompaDistance = 20f, _pompaStartWidth = 0.25f, _pompaEndWidth = 0.25f, _pompaPullSpeed = 10;
-    [SerializeField] private AnimationCurve _animCurv;
+    [SerializeField] private float _minPompaDistance = 2f, _maxPompaDistance = 20f, _pompaStartWidth = 0.25f, _pompaEndWidth = 0.25f, _pompaPullSpeed = 10;
 
-    private int _pompaCounter = 0;
-    
     private GameObject _pompaCurrentProjectile;
     private Transform _pompaCurrentProjectileTr;
     private StickToObjectByWeight _pompaCurrentProjectileScript;
-
+    private Rigidbody _attachedToPompaObjectRb;
     private LineRenderer _lineRenderer;
-    private bool _isEquiped = false, _canFire = false, _pompaLive = false;
+
+    private bool _isEquiped = false, _canFire = false, _isPompaLive = false, _isPompaReturning, _attachedObject = false;
     
     public InputActionProperty LeftpinchAnimationAction, RightpinchAnimationAction;
     public float BulletSpeedMultiplier;
@@ -39,16 +37,23 @@ public class RifleHandler : MonoBehaviour
             WeaponFireUp();
         }
 
-        if (_rifleType == RifleType.Pompa && _isEquiped && _pompaCurrentProjectileScript && _pompaCounter == 0)
+        if (_rifleType == RifleType.Pompa && _isEquiped && _pompaCurrentProjectileScript && !_isPompaReturning)
         {
-            if (_pompaCurrentProjectileScript.ConnectedObjectRb && !(Vector3.Distance(_pompaCurrentProjectileTr.position, _bulletOriginTr.position) > _maxPompaDistance))
+            if (_pompaCurrentProjectileScript.ConnectedObjectRb || (Vector3.Distance(_pompaCurrentProjectileTr.position, _bulletOriginTr.position) > _maxPompaDistance))
             {
+                
+                _isPompaReturning = true;
+                _pompaCurrentProjectileScript.Rb.velocity = Vector3.zero;
+                //_pompaCurrentProjectileScript.Rb.useGravity = false;
                 StartCoroutine(PullPompaConnectedObject());
-                _pompaCounter++;
+                _pompaCurrentProjectileScript.Rb.useGravity = false;
             }
         }
 
         PompaFire();
+
+        if (_attachedObject)
+            _attachedToPompaObjectRb.position = _bulletOriginTr.position;
     }
     #endregion
 
@@ -129,6 +134,13 @@ public class RifleHandler : MonoBehaviour
     #region Pompa Behavior
     private void PompaFireDown()
     {
+        if (_attachedObject)
+        {
+            _attachedObject = false;
+            _attachedToPompaObjectRb.useGravity = true;
+            return;
+        }
+
         if (_pompaCurrentProjectile)
             return;
 
@@ -152,63 +164,79 @@ public class RifleHandler : MonoBehaviour
         _pompaCurrentProjectileTr = _pompaCurrentProjectile.transform;
         // ----------------------------------------
 
-        _pompaLive = true;
+        _isPompaLive = true;
     }
     private void PompaFire()
     {
-        if (_pompaLive)
+        if (_isPompaLive)
         {
             if (_lineRenderer)
             {
-                Vector3[] lrPositions = new Vector3[2];
-                lrPositions[0] = _bulletOriginTr.position;
-                lrPositions[1] = _pompaCurrentProjectileTr.position;
-                _lineRenderer.SetPositions(lrPositions);
+                UpdatePompaLine();
             }
             else
             {
-                Debug.Log("No LineRenderer");
+                Debug.LogError("No LineRenderer");
                 return;
             }
         }
+        else
+        {
+            Debug.Log("Pompa is not live");
+            return;
+        }
     }
-    //private void PompaFireUp()
-    //{
-    //}
-
-
-    // need fixing
-    private IEnumerator PullPompaConnectedObject()
+    private void PompaFireUp()
     {
-        while (!_pompaCurrentProjectileScript.ConnectedObjectRb)
-        {
-            yield return null;
-        }
 
-        while (Vector3.Distance(_pompaCurrentProjectileTr.position, _bulletOriginTr.position) > _maxPompaDistance)
-        {
-            Debug.Log("hi");
-            float distance = Vector3.Distance(_pompaCurrentProjectileTr.position, _bulletOriginTr.position);
-            float normalizedDisToMax = 1 - distance / _maxPompaDistance;
+    }
 
-            float posY = _animCurv.Evaluate(normalizedDisToMax);
+    private void UpdatePompaLine()
+    {
+        Vector3[] lrPositions = new Vector3[2];
+        lrPositions[0] = _bulletOriginTr.position;
+        lrPositions[1] = _pompaCurrentProjectileTr.position;
+        _lineRenderer.SetPositions(lrPositions);
+        _test = Vector3.Distance(_pompaCurrentProjectileTr.position, _bulletOriginTr.position);
+    }
 
-            Vector3 direction = (_pompaCurrentProjectileTr.position - _bulletOriginTr.position).normalized;
-            _pompaCurrentProjectileScript.ConnectedObjectRb.transform.position += direction * _pompaPullSpeed;
-            //_pompaCurrentProjectileScript.ConnectedObjectRb.transform.position = 
-            // pull rigidbody towards rifle
-
-            //_pompaCirrentProjectileScript.ConnectedObjectRb.MovePosition(direction * _pompaPullSpeed * Time.deltaTime);
-
-
-            yield return null;
-        }
-
+    private void RemovePompaProjectile()
+    {
         Destroy(_pompaCurrentProjectile);
         Destroy(_lineRenderer);
         _pompaCurrentProjectile = null;
         _lineRenderer = null;
-        _pompaCounter = 0;
+        _isPompaReturning = false;
+    }
+
+    private IEnumerator PullPompaConnectedObject()
+    {
+        while (_pompaCurrentProjectileScript.ObjectConnected || Vector3.Distance(_pompaCurrentProjectileTr.position, _bulletOriginTr.position) > _maxPompaDistance)
+        {
+            Vector3 direction = (_pompaCurrentProjectileTr.position - _bulletOriginTr.position).normalized;
+            _pompaCurrentProjectileScript.Rb.velocity -= direction * _pompaPullSpeed * Time.deltaTime;
+
+            if (_pompaCurrentProjectileScript.ObjectConnected && Vector3.Distance(_pompaCurrentProjectileTr.position, _bulletOriginTr.position) <= _minPompaDistance)
+            {
+                _attachedToPompaObjectRb = _pompaCurrentProjectileScript.ConnectedObjectRb;
+                RemovePompaProjectile();
+                _attachedObject = true;
+                break;
+            }
+            else
+            {
+                yield return null;
+            }
+        }
+
+        while (!(Vector3.Distance(_pompaCurrentProjectileTr.position, _bulletOriginTr.position) <= _minPompaDistance))
+        {
+            Vector3 direction = (_pompaCurrentProjectileTr.position - _bulletOriginTr.position).normalized;
+            _pompaCurrentProjectileScript.Rb.velocity -= direction * _pompaPullSpeed * Time.deltaTime;
+            yield return null;
+        }
+
+        RemovePompaProjectile();
     }
     #endregion
 
