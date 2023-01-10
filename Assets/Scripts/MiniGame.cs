@@ -3,15 +3,15 @@ using System.Collections;
 using UnityEngine;
 using System;
 using TMPro;
-using UnityEngine.Events;
 
 public abstract class MiniGame : MonoBehaviour
 {
     public static event EventHandler OnAnyScoreIncrease;
 
+    [SerializeField] protected string[] _pointGiverTags; 
     [SerializeField] private TextMeshPro scoreText;
 
-    [SerializeField] private int playerScore = 0;
+    private int playerScore = 0;
     private bool isActive;
 
     private void Awake(){ DeactivateGame(); }
@@ -30,6 +30,7 @@ public abstract class MiniGame : MonoBehaviour
     public virtual void StartMiniGame()
     {
         SetIsActive(true);
+        PointsGiver.TryGivePoint += PointGiver_TryGivePoint;
         playerScore = 0;
         scoreText.gameObject.SetActive(true);
         scoreText.text = playerScore.ToString();
@@ -38,7 +39,12 @@ public abstract class MiniGame : MonoBehaviour
     protected virtual void DeactivateGame()
     {
         SetIsActive(false);
+        PointsGiver.TryGivePoint -= PointGiver_TryGivePoint;
         scoreText.gameObject.SetActive(false);
     }
 
+    private void PointGiver_TryGivePoint(object sender, int points)
+    {
+        IncreaseScoreBy(points);
+    }
 }

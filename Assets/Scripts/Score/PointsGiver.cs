@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PointsGiver : MonoBehaviour
 {
+    public static event System.EventHandler<int> TryGivePoint;
+
     [SerializeField] private string _tagLayer;
     [SerializeField] private int _pointsToGive = 0;
     [SerializeField] private bool _givePointsOnCollision = true, _givePointsOnClick = false, _givePointsOnTrigger = false, _givePointsOnCondition;
@@ -14,33 +16,27 @@ public class PointsGiver : MonoBehaviour
     {
         if (_givePointsOnCollision && collision.gameObject.CompareTag(_tagLayer))
         {
-            ScoreManager.Instance.Score += _pointsToGive;
+            TryGivePoint?.Invoke(this, _pointsToGive);
+            //ScoreManager.Instance.Score += _pointsToGive;
         }
-
-        //for (int i = 0; i < _incomingObjectTag.Length; i++)
-        //{
-        //    if (collision.gameObject.CompareTag(_incomingObjectTag[i]))
-        //    {
-        //        //_pointsToGive = _pointsPerTag[i];
-        //        Debug.Log("Got Points");
-        //        ScoreManager.Instance.Score += _pointsToGive;
-        //    }
-        //}
     }
     private void OnTriggerEnter(Collider other)
     {
         if (_givePointsOnTrigger && other.gameObject.CompareTag(_tagLayer))
         {
-            ScoreManager.Instance.Score += _pointsToGive;
+            TryGivePoint?.Invoke(this, _pointsToGive);
+            //ScoreManager.Instance.Score += _pointsToGive;
         }
     }
     public void GivePointsOnClick()
     {
-        ScoreManager.Instance.Score += _pointsToGive;
+        TryGivePoint?.Invoke(this, _pointsToGive);
+        //ScoreManager.Instance.Score += _pointsToGive;
     }
     public void GivePointsOnCondition(bool condition)
     {
        if (condition)
-            ScoreManager.Instance.Score += _pointsToGive;
+            TryGivePoint?.Invoke(this, _pointsToGive);
+        //ScoreManager.Instance.Score += _pointsToGive;
     }
 }

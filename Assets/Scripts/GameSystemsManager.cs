@@ -28,5 +28,4 @@ public class GameSystemsManager : MonoBehaviour
             OnAnyMiniGameStarted?.Invoke(this, EventArgs.Empty);
         }
     }
-
 }
