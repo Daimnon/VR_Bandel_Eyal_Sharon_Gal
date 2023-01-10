@@ -197,7 +197,6 @@ public class RifleHandler : MonoBehaviour
         lrPositions[0] = _bulletOriginTr.position;
         lrPositions[1] = _pompaCurrentProjectileTr.position;
         _lineRenderer.SetPositions(lrPositions);
-        _test = Vector3.Distance(_pompaCurrentProjectileTr.position, _bulletOriginTr.position);
     }
 
     private void RemovePompaProjectile()
