@@ -11,13 +11,14 @@ public class RifleHandler : MonoBehaviour
     [SerializeField] private Transform _bulletOriginTr;
     [SerializeField] private RifleType _rifleType;
     [SerializeField] private Material _grappleMat;
-    [SerializeField] private float _maxPompaDistance = 20f, _pompaStartWidth = 0.25f, _pompaEndWidth = 0.25f;
+    [SerializeField] private float _maxPompaDistance = 20f, _pompaStartWidth = 0.25f, _pompaEndWidth = 0.25f, _pompaPullSpeed = 10;
+    [SerializeField] private AnimationCurve _animCurv;
+
+    private int _pompaCounter = 0;
     
     private GameObject _pompaCurrentProjectile;
     private Transform _pompaCurrentProjectileTr;
-
-    private StickToObjectByWeight _pompaCirrentProjectileScript;
-    //public StickToObjectByWeight PompaCirrentProjectileScript { get => _pompaCirrentProjectileScript; set => value = _pompaCirrentProjectileScript; }
+    private StickToObjectByWeight _pompaCurrentProjectileScript;
 
     private LineRenderer _lineRenderer;
     private bool _isEquiped = false, _canFire = false, _pompaLive = false;
@@ -38,14 +39,16 @@ public class RifleHandler : MonoBehaviour
             WeaponFireUp();
         }
 
-        // problem - check
-        if (_rifleType == RifleType.Pompa && _isEquiped && _pompaCirrentProjectileScript)
+        if (_rifleType == RifleType.Pompa && _isEquiped && _pompaCurrentProjectileScript && _pompaCounter == 0)
         {
-            if (_pompaCirrentProjectileScript.ConnectedObjectRb && !(Vector3.Distance(_pompaCurrentProjectileTr.position, _bulletOriginTr.position) > _maxPompaDistance))
+            if (_pompaCurrentProjectileScript.ConnectedObjectRb && !(Vector3.Distance(_pompaCurrentProjectileTr.position, _bulletOriginTr.position) > _maxPompaDistance))
             {
                 StartCoroutine(PullPompaConnectedObject());
+                _pompaCounter++;
             }
         }
+
+        PompaFire();
     }
     #endregion
 
@@ -115,8 +118,8 @@ public class RifleHandler : MonoBehaviour
             case RifleType.Super:
                 return;
             case RifleType.Pompa:
-                PompaFireUp();
-                break;
+                //PompaFireUp();
+                return;
             default:
                 break;
         }
@@ -131,7 +134,7 @@ public class RifleHandler : MonoBehaviour
 
         _pompaCurrentProjectile = Instantiate(_pompaBullet, _bulletOriginTr.position, Quaternion.identity, _bulletContainer.transform);
         _pompaCurrentProjectile.GetComponent<Rigidbody>().AddForce(transform.up.normalized * BulletSpeedMultiplier, ForceMode.Impulse);
-        _pompaCirrentProjectileScript = _pompaCurrentProjectile.GetComponent<StickToObjectByWeight>();
+        _pompaCurrentProjectileScript = _pompaCurrentProjectile.GetComponent<StickToObjectByWeight>();
 
         // Initialize Line -------------------------------
         _pompaCurrentProjectile.AddComponent<LineRenderer>();
@@ -169,28 +172,33 @@ public class RifleHandler : MonoBehaviour
             }
         }
     }
-    private void PompaFireUp()
-    {
-    }
+    //private void PompaFireUp()
+    //{
+    //}
 
 
     // need fixing
     private IEnumerator PullPompaConnectedObject()
     {
-        while (!_pompaCirrentProjectileScript.ConnectedObjectRb)
+        while (!_pompaCurrentProjectileScript.ConnectedObjectRb)
         {
             yield return null;
         }
 
         while (Vector3.Distance(_pompaCurrentProjectileTr.position, _bulletOriginTr.position) > _maxPompaDistance)
         {
-            Vector3[] lrPositions = new Vector3[2];
-            lrPositions[0] = _bulletOriginTr.position;
-            lrPositions[1] = _pompaCurrentProjectileTr.position;
-            _lineRenderer.SetPositions(lrPositions);
+            Debug.Log("hi");
+            float distance = Vector3.Distance(_pompaCurrentProjectileTr.position, _bulletOriginTr.position);
+            float normalizedDisToMax = 1 - distance / _maxPompaDistance;
 
-            // pull rigidbody towards rifle
+            float posY = _animCurv.Evaluate(normalizedDisToMax);
+
             Vector3 direction = (_pompaCurrentProjectileTr.position - _bulletOriginTr.position).normalized;
+            _pompaCurrentProjectileScript.ConnectedObjectRb.transform.position += direction * _pompaPullSpeed;
+            //_pompaCurrentProjectileScript.ConnectedObjectRb.transform.position = 
+            // pull rigidbody towards rifle
+
+            //_pompaCirrentProjectileScript.ConnectedObjectRb.MovePosition(direction * _pompaPullSpeed * Time.deltaTime);
 
 
             yield return null;
@@ -200,6 +208,7 @@ public class RifleHandler : MonoBehaviour
         Destroy(_lineRenderer);
         _pompaCurrentProjectile = null;
         _lineRenderer = null;
+        _pompaCounter = 0;
     }
     #endregion
 

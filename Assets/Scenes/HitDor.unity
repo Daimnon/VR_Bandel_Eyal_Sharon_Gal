@@ -963,6 +963,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 328635779}
     - target: {fileID: 4861946948860571223, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
+      propertyPath: _pompaPullSpeed
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 4861946948860571223, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
       propertyPath: _bulletContainer
       value: 
       objectReference: {fileID: 612005071}
@@ -989,6 +993,42 @@ PrefabInstance:
     - target: {fileID: 4861946948860571223, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
       propertyPath: BulletSpeedMultiplier
       value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 4861946948860571223, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
+      propertyPath: _animCurv.m_Curve.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4861946948860571223, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
+      propertyPath: _animCurv.m_Curve.Array.data[1].time
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4861946948860571223, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
+      propertyPath: _animCurv.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4861946948860571223, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
+      propertyPath: _animCurv.m_Curve.Array.data[0].inSlope
+      value: 0.094138786
+      objectReference: {fileID: 0}
+    - target: {fileID: 4861946948860571223, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
+      propertyPath: _animCurv.m_Curve.Array.data[1].inSlope
+      value: -3.1910062
+      objectReference: {fileID: 0}
+    - target: {fileID: 4861946948860571223, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
+      propertyPath: _animCurv.m_Curve.Array.data[0].outSlope
+      value: 0.094138786
+      objectReference: {fileID: 0}
+    - target: {fileID: 4861946948860571223, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
+      propertyPath: _animCurv.m_Curve.Array.data[1].inWeight
+      value: 0.07541335
+      objectReference: {fileID: 0}
+    - target: {fileID: 4861946948860571223, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
+      propertyPath: _animCurv.m_Curve.Array.data[1].outSlope
+      value: -3.1910062
+      objectReference: {fileID: 0}
+    - target: {fileID: 4861946948860571223, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
+      propertyPath: _animCurv.m_Curve.Array.data[0].outWeight
+      value: 0.35074627
       objectReference: {fileID: 0}
     - target: {fileID: 7435438120478815900, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
       propertyPath: m_Name
@@ -1955,8 +1995,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfd0d630a14665c4eb92ad90a5660d63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tagLayer: Dor
   _pointsToGive: 10
-  _projectileTag: Dor
   _givePointsOnCollision: 1
   _givePointsOnClick: 0
   _givePointsOnTrigger: 0
