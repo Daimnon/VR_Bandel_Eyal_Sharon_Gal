@@ -4,40 +4,47 @@ using UnityEngine;
 
 public class StickToObjectByWeight : MonoBehaviour
 {
-    [SerializeField] private float _maxPullMass = 25, lerpDuration = 3;
+    [SerializeField] private float _maxPullMass = 25;
+
+    private Vector3 _originalPos = Vector3.zero;
 
     private const string _weaponTag = "Rifle";
-    private Rigidbody _objectRb;
-    private Vector3 _targetPos = Vector3.zero;
 
-    private void Start()
+    private Rigidbody _rb;
+    public Rigidbody Rb => _rb;
+
+    private Rigidbody _connectedObjectRb;
+    public Rigidbody ConnectedObjectRb => _connectedObjectRb;
+
+    private bool _objectConnected = false;
+    public bool ObjectConnected => _objectConnected;
+
+    private void Awake()
     {
-        _targetPos = transform.position;
+        _rb = GetComponent<Rigidbody>();
+        _originalPos = transform.position;
     }
     private void Update()
     {
-        if (_objectRb && !_objectRb.gameObject.CompareTag(_weaponTag))
-            transform.position = _objectRb.transform.position;
+        if (_objectConnected && !_connectedObjectRb.gameObject.CompareTag(_weaponTag))
+        {
+            _connectedObjectRb.transform.position = transform.position;
+        }
     }
     private void OnTriggerEnter(Collider other)
     {
         if (!other.gameObject.CompareTag(_weaponTag) && other.gameObject.TryGetComponent(out Rigidbody rb) && rb.mass <= _maxPullMass)
         {
-            StartCoroutine(PullObject(_targetPos, lerpDuration));
-            _objectRb = rb;
-        }
-    }
+            _connectedObjectRb = rb;
+            _connectedObjectRb.useGravity = false;
 
-    IEnumerator PullObject(Vector3 targetPosition, float duration)
-    {
-        float time = 0;
-        Vector3 startPosition = transform.position;
-        while (time < duration)
-        {
-            _objectRb.transform.position = Vector3.Lerp(startPosition, targetPosition, time / duration);
-            time += Time.deltaTime;
-            yield return null;
+            //foreach (Rigidbody childRb in _connectedObjectRb.GetComponentsInChildren<Rigidbody>())
+            //{
+            //    childRb.useGravity = false;
+            //}
+
+            _rb.useGravity = false;
+            _objectConnected = true;
         }
-        transform.position = targetPosition;
     }
 }
