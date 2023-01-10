@@ -7,8 +7,13 @@ public class StickToObjectByWeight : MonoBehaviour
     [SerializeField] private float _maxPullMass = 25, lerpDuration = 3;
 
     private const string _weaponTag = "Rifle";
-    private Rigidbody _objectRb;
     private Vector3 _targetPos = Vector3.zero;
+
+    private Rigidbody _connectedObjectRb;
+    public Rigidbody ConnectedObjectRb => _connectedObjectRb;
+
+    private bool _objectConnected;
+    public bool ObjectConnected => _objectConnected;
 
     private void Start()
     {
@@ -16,28 +21,23 @@ public class StickToObjectByWeight : MonoBehaviour
     }
     private void Update()
     {
-        if (_objectRb && !_objectRb.gameObject.CompareTag(_weaponTag))
-            transform.position = _objectRb.transform.position;
+        if (_connectedObjectRb && !_connectedObjectRb.gameObject.CompareTag(_weaponTag))
+        {
+            if (!_objectConnected)
+                _objectConnected = true;
+
+            transform.position = _connectedObjectRb.transform.position;
+        }
+        else
+        {
+            _objectConnected = false;
+        }
     }
     private void OnTriggerEnter(Collider other)
     {
         if (!other.gameObject.CompareTag(_weaponTag) && other.gameObject.TryGetComponent(out Rigidbody rb) && rb.mass <= _maxPullMass)
         {
-            StartCoroutine(PullObject(_targetPos, lerpDuration));
-            _objectRb = rb;
+            _connectedObjectRb = rb;
         }
-    }
-
-    IEnumerator PullObject(Vector3 targetPosition, float duration)
-    {
-        float time = 0;
-        Vector3 startPosition = transform.position;
-        while (time < duration)
-        {
-            _objectRb.transform.position = Vector3.Lerp(startPosition, targetPosition, time / duration);
-            time += Time.deltaTime;
-            yield return null;
-        }
-        transform.position = targetPosition;
     }
 }
