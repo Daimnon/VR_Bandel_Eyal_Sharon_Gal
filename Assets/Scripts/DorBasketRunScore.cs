@@ -7,11 +7,11 @@ public class DorBasketRunScore : MiniGame
 {
     public static DorBasketRunScore Instance { get; private set; }
 
-    [SerializeField] float timeBetweenShots = 2f;
-    [SerializeField] private Transform shootingPoint;
+    [SerializeField] private float timeBetweenShots = 2f, shootingPower = 20f;
+    [SerializeField] private Transform shootingPoint, lid;
     [SerializeField] private Transform gameContainerTransform;
 
-    private List<Transform> gameContainer = new List<Transform>();
+    private List<Rigidbody> gameContainer = new List<Rigidbody>();
     private WaitForSeconds waitTimeBetweenShots;
 
     private void Awake()
@@ -41,33 +41,42 @@ public class DorBasketRunScore : MiniGame
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Dor"))
+        foreach (string tag in _pointGiverTags)
         {
-            if (!GetIsActive())
-                GameSystemsManager.Instance.TryStartMiniGame(this);
+            if (other.gameObject.CompareTag(tag))
+            {
+                if (!GetIsActive())
+                    GameSystemsManager.Instance.TryStartMiniGame(this);
 
-            gameContainer.Add(other.transform);
+                gameContainer.Add(other.gameObject.GetComponent<Rigidbody>());
 
-            IncreaseScoreBy(1);
-            other.transform.position = gameContainerTransform.position;
+                IncreaseScoreBy(1);
+
+                other.transform.position = gameContainerTransform.position;
+
+                break;
+            }
         }
         //print($"Score:{GetPlayerScore()}, Contains: {gameContainer[gameContainer.Count]} items");
     }
 
     private IEnumerator ShootAllAmmo()
     {
-        List<Transform> listToRemove = new List<Transform>();
+        List<Rigidbody> listToRemove = new List<Rigidbody>();
+        lid.gameObject.SetActive(false);
 
-        foreach (var dor in gameContainer)
+        foreach (Rigidbody dor in gameContainer)
         {
-            dor.transform.position = shootingPoint.position;
             yield return waitTimeBetweenShots;
+            dor.transform.position = shootingPoint.position;
+            dor.AddForce(shootingPoint.forward * shootingPower, ForceMode.Impulse);
             listToRemove.Add(dor);
-            //add force
         }
 
         foreach (var dor in listToRemove)
             gameContainer.Remove(dor);
+
+        lid.gameObject.SetActive(true);
     }
 
 }
