@@ -7,11 +7,15 @@ public class TrackHandler : MonoBehaviour
     [SerializeField] Transform _startPos;
     [SerializeField] Transform _endPos;
     [SerializeField] SmallDorPool _dorPool;
+    Vector3 _trackDirection;
     [SerializeField] List<GameObject> _trackObjects;
     [SerializeField] int _maxObjectsOnTrack;
-    [SerializeField] float _trackTime;
-    [SerializeField] float _spawnDelta;
-    [SerializeField] float _currentTime;
+    [SerializeField] float _trackTotalTime;
+    float _currentTrackTime;
+    [SerializeField] float _spawnCooldown;
+    float _currentSpawnTime;
+    [SerializeField] float _trackSpeed = 1;
+    bool _isTrackActive;
     private void Awake()
     {
         if (!_startPos)
@@ -20,26 +24,84 @@ public class TrackHandler : MonoBehaviour
             throw new System.Exception("Track do not have end Pos");
         if (!_dorPool)
             throw new System.Exception("Track do not have dor pool");
+
+        _trackDirection = _endPos.position - _startPos.position;
+    }
+    private void Update()
+    {
+        if (_isTrackActive)
+        {
+            MoveDors();
+            _currentTrackTime -= Time.deltaTime;
+            if (_currentTrackTime <= 0)
+            {
+                if (_trackObjects.Count == 0)
+                {
+                    _isTrackActive = false;
+                }
+            }
+            else
+            {
+                if (_currentSpawnTime >= 0)
+                {
+                    _currentSpawnTime -= Time.deltaTime;
+                }
+                else
+                {
+                    if (_trackObjects.Count < _maxObjectsOnTrack)
+                    {
+                        _currentSpawnTime = _spawnCooldown;
+                        _trackObjects.Add(_dorPool.SpawnDor(_startPos.gameObject));
+                    }
+
+                }
+
+            }
+        }
     }
     public void StartTrack()
     {
         //spawn dors every X seconds
-        _currentTime = _trackTime;
-        StartCoroutine(SpawnDors());
+        _isTrackActive = true;
+        _currentSpawnTime = _spawnCooldown;
+        _currentTrackTime = _trackTotalTime;
     }
-    IEnumerator SpawnDors()
+    public void MoveDors()
     {
-        if (_currentTime >= 0)
-        { 
-            _currentTime -= Time.deltaTime;
-            yield return new WaitForSeconds(_spawnDelta);
-        }
-    }
-    private void MoveDors()
-    {
-        foreach (var dor in _trackObjects)
+        var movement = (transform.position + _trackDirection).normalized * _trackSpeed *Time.deltaTime;
+        if (_trackObjects.Count != 0)
         {
-            //dor.Move();
+            var toBeRomoved = new List<GameObject>();
+            foreach (var dor in _trackObjects)
+            {
+                if (isReachedDestination(dor))
+                {
+                    dor.gameObject.SetActive(false);
+                    toBeRomoved.Add(dor);
+                }
+                else
+                {
+                    dor.transform.Translate(movement);
+                }
+            }
+            if (toBeRomoved.Count > 0)
+            {
+                foreach (var dor in toBeRomoved)
+                {
+                    _trackObjects.Remove(dor);
+                }
+            }
         }
+    }
+    bool isReachedDestination(GameObject dor)
+    {
+        float offset = 0.5f;
+        var distance = dor.transform.position - _endPos.transform.position;
+        if (distance.x <= offset && distance.y < offset && distance.z < offset)
+        {
+            //reached destination
+            return true;
+        }
+        return false;
     }
 }
