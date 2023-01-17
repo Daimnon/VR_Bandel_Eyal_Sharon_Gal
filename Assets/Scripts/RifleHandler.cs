@@ -201,6 +201,7 @@ public class RifleHandler : MonoBehaviour
 
     private void RemovePompaProjectile()
     {
+        _isPompaLive = false;
         Destroy(_pompaCurrentProjectile);
         Destroy(_lineRenderer);
         _pompaCurrentProjectile = null;
