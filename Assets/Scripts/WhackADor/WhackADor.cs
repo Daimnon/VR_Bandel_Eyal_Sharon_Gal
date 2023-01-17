@@ -8,19 +8,19 @@ public class WhackADor : MonoBehaviour
     private float _poppedDorTimer;
     [SerializeField] private List<DorMole> _dorMoles = new List<DorMole>();
 
-    public void BeginGame()
-    {
+    //public void BeginGame()
+    //{
 
-    }
+    //}
 
-    private IEnumerator RunGame()
-    {
+    //private IEnumerator RunGame()
+    //{
 
-    }
+    //}
 
-    private IEnumerator PopDor(DorMole mole)
-    {
-        mole.MoveDorUp();
-        yield return WaitUntil(_poppedDorTimer)
-    }
+    //private IEnumerator PopDor(DorMole mole)
+    //{
+    //    mole.MoveDorUp();
+    //    yield return WaitUntil(_poppedDorTimer);
+    //}
 }
