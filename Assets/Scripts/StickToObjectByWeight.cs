@@ -9,6 +9,7 @@ public class StickToObjectByWeight : MonoBehaviour
     private Vector3 _originalPos = Vector3.zero;
 
     private const string _weaponTag = "Rifle";
+    private const string _dorTag = "Dor";
 
     private Rigidbody _rb;
     public Rigidbody Rb => _rb;
@@ -37,11 +38,14 @@ public class StickToObjectByWeight : MonoBehaviour
         {
             _connectedObjectRb = rb;
             _connectedObjectRb.useGravity = false;
+            _connectedObjectRb.isKinematic = true;
+            _connectedObjectRb.GetComponent<Collider>().enabled = false;
 
-            //foreach (Rigidbody childRb in _connectedObjectRb.GetComponentsInChildren<Rigidbody>())
-            //{
-            //    childRb.useGravity = false;
-            //}
+            foreach (Rigidbody childRb in _connectedObjectRb.GetComponentsInChildren<Rigidbody>())
+            {
+                childRb.useGravity = false;
+                childRb.isKinematic = true;
+            }
 
             _rb.useGravity = false;
             _objectConnected = true;

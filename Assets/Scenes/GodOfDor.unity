@@ -5538,6 +5538,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 84417982429223674}
     m_Modifications:
+    - target: {fileID: 1444685987045540069, guid: 7f82c77822a8f254caffd9089c773fc4, type: 3}
+      propertyPath: m_TagString
+      value: Dor
+      objectReference: {fileID: 0}
     - target: {fileID: 1787339239798124833, guid: 7f82c77822a8f254caffd9089c773fc4, type: 3}
       propertyPath: m_ConnectedAnchor.x
       value: 0.18760416

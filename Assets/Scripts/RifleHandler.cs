@@ -47,6 +47,7 @@ public class RifleHandler : MonoBehaviour
                 //_pompaCurrentProjectileScript.Rb.useGravity = false;
                 StartCoroutine(PullPompaConnectedObject());
                 _pompaCurrentProjectileScript.Rb.useGravity = false;
+                //_pompaCurrentProjectileScript.Rb.isKinematic = true;
             }
         }
 
@@ -134,16 +135,28 @@ public class RifleHandler : MonoBehaviour
     #region Pompa Behavior
     private void PompaFireDown()
     {
+        // remove previously attached object
         if (_attachedObject)
         {
             _attachedObject = false;
             _attachedToPompaObjectRb.useGravity = true;
+
+            foreach (Rigidbody childRb in _attachedToPompaObjectRb.GetComponentsInChildren<Rigidbody>())
+            {
+                childRb.useGravity = true;
+                childRb.isKinematic = false;
+            }
+
+            _attachedToPompaObjectRb.isKinematic = false;
+            _attachedToPompaObjectRb.GetComponent<Collider>().enabled = true;
             return;
         }
 
+        // check if there is already a projectile
         if (_pompaCurrentProjectile)
             return;
 
+        // create projectile and get relevant components
         _pompaCurrentProjectile = Instantiate(_pompaBullet, _bulletOriginTr.position, Quaternion.identity, _bulletContainer.transform);
         _pompaCurrentProjectile.GetComponent<Rigidbody>().AddForce(transform.up.normalized * BulletSpeedMultiplier, ForceMode.Impulse);
         _pompaCurrentProjectileScript = _pompaCurrentProjectile.GetComponent<StickToObjectByWeight>();
@@ -193,6 +206,7 @@ public class RifleHandler : MonoBehaviour
 
     private void UpdatePompaLine()
     {
+        // set new start and end positions for the line renderer
         Vector3[] lrPositions = new Vector3[2];
         lrPositions[0] = _bulletOriginTr.position;
         lrPositions[1] = _pompaCurrentProjectileTr.position;
@@ -201,6 +215,7 @@ public class RifleHandler : MonoBehaviour
 
     private void RemovePompaProjectile()
     {
+        // reset all logic for pompa
         _isPompaLive = false;
         Destroy(_pompaCurrentProjectile);
         Destroy(_lineRenderer);
@@ -211,6 +226,7 @@ public class RifleHandler : MonoBehaviour
 
     private IEnumerator PullPompaConnectedObject()
     {
+        // happens if hit relevant object
         while (_pompaCurrentProjectileScript.ObjectConnected || Vector3.Distance(_pompaCurrentProjectileTr.position, _bulletOriginTr.position) > _maxPompaDistance)
         {
             Vector3 direction = (_pompaCurrentProjectileTr.position - _bulletOriginTr.position).normalized;
@@ -229,6 +245,7 @@ public class RifleHandler : MonoBehaviour
             }
         }
 
+        // happens when don't hit relevant object
         while (!(Vector3.Distance(_pompaCurrentProjectileTr.position, _bulletOriginTr.position) <= _minPompaDistance))
         {
             Vector3 direction = (_pompaCurrentProjectileTr.position - _bulletOriginTr.position).normalized;
