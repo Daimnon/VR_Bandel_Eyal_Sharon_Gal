@@ -3,13 +3,16 @@ using System.Collections;
 using UnityEngine;
 using System;
 
-public class DorBasketRunScore : GameScore
+public class DorBasketRunScore : MiniGame
 {
     public static DorBasketRunScore Instance { get; private set; }
 
-    [SerializeField] private Transform dorShootingPoint;
+    [SerializeField] private float timeBetweenShots = 2f, shootingPower = 20f;
+    [SerializeField] private Transform shootingPoint, lid;
+    [SerializeField] private Transform gameContainerTransform;
 
-    private List<GameObject> dorHolder = new List<GameObject>();
+    private List<Rigidbody> gameContainer = new List<Rigidbody>();
+    private WaitForSeconds waitTimeBetweenShots;
 
     private void Awake()
     {
@@ -19,35 +22,61 @@ public class DorBasketRunScore : GameScore
         Instance = this;
     }
 
+    private void Start()
+    {
+        waitTimeBetweenShots = new WaitForSeconds(timeBetweenShots);
+    }
+
     private void Update()
     {
+        if (!GetIsActive())
+            return;
 
-
+        if (gameContainer.Count >= 5)
+        {
+            SetIsActive(false);
+            StartCoroutine(ShootAllAmmo());
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Dor"))
+        foreach (string tag in _pointGiverTags)
         {
-            if (!isActive)
+            if (other.gameObject.CompareTag(tag))
             {
-                isActive = true;
-                GameSystemsManager.Instance.StartMiniGame(this);
+                if (!GetIsActive())
+                    GameSystemsManager.Instance.TryStartMiniGame(this);
+
+                gameContainer.Add(other.gameObject.GetComponent<Rigidbody>());
+
+                IncreaseScoreBy(1);
+
+                other.transform.position = gameContainerTransform.position;
+
+                break;
             }
-
-            dorHolder.Add(other.gameObject);
-            playerScore++;
         }
-        print($"{playerScore}, {dorHolder[dorHolder.Count - 1]}");
+        //print($"Score:{GetPlayerScore()}, Contains: {gameContainer[gameContainer.Count]} items");
     }
 
-    public override void GameSystemsManager_OnMiniGameStarted(object sender, EventArgs e)
+    private IEnumerator ShootAllAmmo()
     {
-        base.GameSystemsManager_OnMiniGameStarted(sender, e);
+        List<Rigidbody> listToRemove = new List<Rigidbody>();
+        lid.gameObject.SetActive(false);
+
+        foreach (Rigidbody dor in gameContainer)
+        {
+            yield return waitTimeBetweenShots;
+            dor.transform.position = shootingPoint.position;
+            dor.AddForce(shootingPoint.forward * shootingPower, ForceMode.Impulse);
+            listToRemove.Add(dor);
+        }
+
+        foreach (var dor in listToRemove)
+            gameContainer.Remove(dor);
+
+        lid.gameObject.SetActive(true);
     }
 
-    public override void GameSystemsManager_OnMiniGameEnded(object sender, EventArgs e)
-    {
-        base.GameSystemsManager_OnMiniGameStarted(sender, e);
-    }
 }

@@ -24,7 +24,7 @@ public class ScoreManager : MonoBehaviour
     private void Awake()
     {
         _instance = this;
-        _currentGameScoreMode = HitDorScoreMode;
+        _currentGameScoreMode = LobbyScoreMode;
     }
     private void Update()
     {
@@ -32,7 +32,34 @@ public class ScoreManager : MonoBehaviour
         _scoreTMP.text = _score.ToString();
     }
 
-    private void HitDorScoreMode()
+    public void ChangeGameScoreMode(int ScoreModeValue)
+    {
+        ScoreMode desiredScoreMode = (ScoreMode)ScoreModeValue;
+        switch (desiredScoreMode)
+        {
+            case ScoreMode.HitDoor:
+                _currentGameScoreMode = LobbyScoreMode;
+                break;
+            case ScoreMode.Other:
+                _currentGameScoreMode = OtherScoreMode;
+                break;
+            case ScoreMode.Another:
+                _currentGameScoreMode = AnotherScoreMode;
+                break;
+            case ScoreMode.YetAnother:
+                _currentGameScoreMode = YetAnotherScoreMode;
+                break;
+            default:
+                _currentGameScoreMode = LobbyScoreMode;
+                break;
+        }
+
+        _scoreMode = desiredScoreMode;
+        return;
+    }
+
+    #region ScoreModes
+    private void LobbyScoreMode()
     {
         ValidateScoreMode(ScoreMode.HitDoor);
     }
@@ -48,32 +75,8 @@ public class ScoreManager : MonoBehaviour
     {
         ValidateScoreMode(ScoreMode.YetAnother);
     }
+    #endregion
 
-    public void ChangeGameScoreMode(int ScoreModeValue)
-    {
-        ScoreMode desiredScoreMode = (ScoreMode)ScoreModeValue;
-        switch (desiredScoreMode)
-        {
-            case ScoreMode.HitDoor:
-                _currentGameScoreMode = HitDorScoreMode;
-                break;
-            case ScoreMode.Other:
-                _currentGameScoreMode = OtherScoreMode;
-                break;
-            case ScoreMode.Another:
-                _currentGameScoreMode = AnotherScoreMode;
-                break;
-            case ScoreMode.YetAnother:
-                _currentGameScoreMode = YetAnotherScoreMode;
-                break;
-            default:
-                _currentGameScoreMode = HitDorScoreMode;
-                break;
-        }
-
-        _scoreMode = desiredScoreMode;
-        return;
-    }
     private void ValidateScoreMode(ScoreMode scoreMode)
     {
         if (_scoreMode != scoreMode)
