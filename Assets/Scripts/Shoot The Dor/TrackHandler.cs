@@ -16,6 +16,8 @@ public class TrackHandler : MonoBehaviour
     float _currentSpawnTime;
     [SerializeField] float _trackSpeed = 1;
     bool _isTrackActive;
+    [SerializeField]TrackManager _trackManager; 
+    public bool IsTrackActive => _isTrackActive;
     private void Awake()
     {
         if (!_startPos)
@@ -25,7 +27,14 @@ public class TrackHandler : MonoBehaviour
         if (!_dorPool)
             throw new System.Exception("Track do not have dor pool");
 
-        _trackDirection = _endPos.position - _startPos.position;
+        _trackDirection = _endPos.localPosition - _startPos.localPosition;
+    }
+    private void OnValidate()
+    {
+        if (_trackManager == null)
+        {
+            var tm = GetComponentInParent<TrackManager>();
+        }
     }
     private void Update()
     {
@@ -38,6 +47,7 @@ public class TrackHandler : MonoBehaviour
                 if (_trackObjects.Count == 0)
                 {
                     _isTrackActive = false;
+                    _trackManager.EndedTracks.Add(true);
                 }
             }
             else
@@ -68,7 +78,7 @@ public class TrackHandler : MonoBehaviour
     }
     public void MoveDors()
     {
-        var movement = (transform.position + _trackDirection).normalized * _trackSpeed *Time.deltaTime;
+        var movement = (transform.localPosition + _trackDirection).normalized * _trackSpeed *Time.deltaTime;
         if (_trackObjects.Count != 0)
         {
             var toBeRomoved = new List<GameObject>();

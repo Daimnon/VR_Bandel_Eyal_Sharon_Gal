@@ -4,12 +4,14 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public enum RifleType { Regular, Super, Pompa }
+public enum ShootType {OnPress,OnHold,OnRelease }
 
 public class RifleHandler : MonoBehaviour
 {
     [SerializeField] private GameObject _bulletPrefab, _pompaBullet, _bulletContainer;
     [SerializeField] private Transform _bulletOriginTr;
     [SerializeField] private RifleType _rifleType;
+    [SerializeField] private ShootType _shootType;
     [SerializeField] private Material _grappleMat;
     [SerializeField] private float _minPompaDistance = 2f, _maxPompaDistance = 20f, _pompaStartWidth = 0.25f, _pompaEndWidth = 0.25f, _pompaPullSpeed = 10;
 
@@ -32,16 +34,24 @@ public class RifleHandler : MonoBehaviour
 
         if (_isEquiped && _canFire)
         {
-            WeaponFireBtnDown();
-            WeaponFireBtn();
-            WeaponFireUp();
+            if (_shootType == ShootType.OnPress)
+            {
+                WeaponFireBtnDown();
+            }
+            else if (_shootType == ShootType.OnHold)
+            {
+                WeaponFireBtn();
+            }
+            else if (_shootType == ShootType.OnRelease)
+            {
+                WeaponFireUp();
+            }
         }
 
         if (_rifleType == RifleType.Pompa && _isEquiped && _pompaCurrentProjectileScript && !_isPompaReturning)
         {
             if (_pompaCurrentProjectileScript.ConnectedObjectRb || (Vector3.Distance(_pompaCurrentProjectileTr.position, _bulletOriginTr.position) > _maxPompaDistance))
             {
-                
                 _isPompaReturning = true;
                 _pompaCurrentProjectileScript.Rb.velocity = Vector3.zero;
                 //_pompaCurrentProjectileScript.Rb.useGravity = false;
@@ -199,10 +209,6 @@ public class RifleHandler : MonoBehaviour
             return;
         }
     }
-    private void PompaFireUp()
-    {
-
-    }
 
     private void UpdatePompaLine()
     {
@@ -270,6 +276,7 @@ public class RifleHandler : MonoBehaviour
     private void NormalFireDown()
     {
         GameObject firedBullet = Instantiate(_bulletPrefab, _bulletOriginTr.position, Quaternion.identity, _bulletContainer.transform);
+        firedBullet.GetComponent<Rigidbody>().AddForce(transform.up.normalized * BulletSpeedMultiplier, ForceMode.Impulse);
     }
     #endregion
 
