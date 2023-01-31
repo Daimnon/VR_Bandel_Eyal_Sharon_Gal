@@ -5,7 +5,7 @@ using UnityEngine;
 public class DorMole : MonoBehaviour
 {
     private int _hammerLayer = 9;
-    [SerializeField] static private Vector3 _dorMovementAmount;
+    [SerializeField] private Vector3 _dorMovementAmount;
     private bool _isDoorUp = false;
     private void OnCollisionEnter(Collision collision)
     {
@@ -31,7 +31,7 @@ public class DorMole : MonoBehaviour
 
     public void MoveDorDown()
     {
-        MoveDor(_dorMovementAmount, false);
+        MoveDor(-_dorMovementAmount, false);
     }
 
 }

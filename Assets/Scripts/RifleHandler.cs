@@ -27,9 +27,6 @@ public class RifleHandler : MonoBehaviour
     #region MonoBehaviour Callbacks
     private void Update()
     {
-        Debug.Log($"{LeftpinchAnimationAction.action.ReadValue<float>()}");
-        Debug.Log($"{RightpinchAnimationAction.action.ReadValue<float>()}");
-
         if (_isEquiped && _canFire)
         {
             WeaponFireBtnDown();
@@ -195,7 +192,7 @@ public class RifleHandler : MonoBehaviour
         }
         else
         {
-            Debug.Log("Pompa is not live");
+            
             return;
         }
     }
