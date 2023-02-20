@@ -8,7 +8,7 @@ public class TrackHandler : MonoBehaviour
     [SerializeField] Transform _endPos;
     [SerializeField] SmallDorPool _dorPool;
     Vector3 _trackDirection;
-    [SerializeField] List<GameObject> _trackObjects;
+    [SerializeField] List<DorGotShot> _trackObjects;
     [SerializeField] int _maxObjectsOnTrack;
     [SerializeField] float _trackTotalTime;
     float _currentTrackTime;
@@ -18,6 +18,7 @@ public class TrackHandler : MonoBehaviour
     bool _isTrackActive;
     [SerializeField]TrackManager _trackManager; 
     public bool IsTrackActive => _isTrackActive;
+    public List<DorGotShot> TrackObjects => _trackObjects;
     private void Awake()
     {
         if (!_startPos)
@@ -61,11 +62,12 @@ public class TrackHandler : MonoBehaviour
                     if (_trackObjects.Count < _maxObjectsOnTrack)
                     {
                         _currentSpawnTime = _spawnCooldown;
-                        _trackObjects.Add(_dorPool.SpawnDor(_startPos.gameObject));
+                        var go = _dorPool.SpawnDor(_startPos.gameObject);
+                        DorGotShot dgs = go.GetComponent<DorGotShot>();
+                        dgs.TrackHandler = this;
+                        _trackObjects.Add(dgs);
                     }
-
                 }
-
             }
         }
     }
@@ -81,29 +83,29 @@ public class TrackHandler : MonoBehaviour
         var movement = (transform.localPosition + _trackDirection).normalized * _trackSpeed *Time.deltaTime;
         if (_trackObjects.Count != 0)
         {
-            var toBeRomoved = new List<GameObject>();
+            var toBeRemoved = new List<DorGotShot>();
             foreach (var dor in _trackObjects)
             {
                 if (isReachedDestination(dor))
                 {
                     dor.gameObject.SetActive(false);
-                    toBeRomoved.Add(dor);
+                    toBeRemoved.Add(dor);
                 }
                 else
                 {
                     dor.transform.Translate(movement);
                 }
             }
-            if (toBeRomoved.Count > 0)
+            if (toBeRemoved.Count > 0)
             {
-                foreach (var dor in toBeRomoved)
+                foreach (var dor in toBeRemoved)
                 {
                     _trackObjects.Remove(dor);
                 }
             }
         }
     }
-    bool isReachedDestination(GameObject dor)
+    bool isReachedDestination(DorGotShot dor)
     {
         float offset = 0.5f;
         var distance = dor.transform.position - _endPos.transform.position;
