@@ -8,7 +8,9 @@ public class WhackADor : MonoBehaviour
     [SerializeField] float _timeRemainingForGame;
     [SerializeField] float _gameTime;
     [SerializeField] float _popTimer;
+    int _maximumNumberOfDors = 3;
     [SerializeField] private float _poppedDorTimer;
+    int _numberOfCurrentlyActiveDors = 0;
     [SerializeField] private List<DorMole> _freeDorMoles = new List<DorMole>();
     [SerializeField] private List<DorMole> _occupiedDorMoles = new List<DorMole>();
 
@@ -22,21 +24,32 @@ public class WhackADor : MonoBehaviour
         _timeRemainingForGame = _gameTime;
 
         System.Random rand = new System.Random();
+        
         int numberOfDorsGoingUp;
         int randomIndex;
+        int maximumNumberOfDorsThatMayGoUp;
         DorMole activeDorMole;
 
         while (_timeRemainingForGame > 0)
         {
             // Determine how many Dors are going up
-            numberOfDorsGoingUp = rand.Next(1, 3 + 1);
+            maximumNumberOfDorsThatMayGoUp = _maximumNumberOfDors - _numberOfCurrentlyActiveDors;
+
+            if(maximumNumberOfDorsThatMayGoUp <= 0)
+            {
+                _timeRemainingForGame -= Time.deltaTime;
+                yield return null;
+                continue;
+            }
+
+            numberOfDorsGoingUp = rand.Next(1, maximumNumberOfDorsThatMayGoUp + 1);
 
             for (int i = 0; i < numberOfDorsGoingUp; i++)
             {
                 // Pop Random Dors
                 randomIndex = rand.Next(0, _freeDorMoles.Count);
 
-                activeDorMole = _freeDorMoles[randomIndex];
+                activeDorMole = _freeDorMoles[randomIndex];   
 
                 StartCoroutine(PopDor(activeDorMole));
             }
@@ -52,16 +65,18 @@ public class WhackADor : MonoBehaviour
 
     private IEnumerator PopDor(DorMole mole)
     {
+
         _freeDorMoles.Remove(mole);
         _occupiedDorMoles.Add(mole);
+
         mole.MoveDorUp();
+        _numberOfCurrentlyActiveDors++;
 
-        // wait until Dor is fully erect
         yield return new WaitForSeconds(_poppedDorTimer);
-        mole.MoveDorDown();
-
-        // wait until Dor is fully Down
         _freeDorMoles.Add(mole);
         _occupiedDorMoles.Remove(mole);
+        _numberOfCurrentlyActiveDors--;
+        mole.MoveDorDown();
+
     }
 }
