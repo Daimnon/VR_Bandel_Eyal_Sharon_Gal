@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class StartTarget : MonoBehaviour
@@ -8,8 +6,10 @@ public class StartTarget : MonoBehaviour
     [SerializeField] LayerMask _bulletMask;
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.layer == _bulletMask)
+        Debug.Log("Collision was triggered");
+        if (collision.gameObject.layer == Mathf.Log(_bulletMask.value, 2))
         {
+            Debug.Log("Mini Game Started");
             _shootTheDorStation.StartMiniGame();
             gameObject.SetActive(false);
         }

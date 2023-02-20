@@ -6,13 +6,19 @@ public class ShootTheDorStation : MiniGame
     public static ShootTheDorStation Instance => _instance;
     [SerializeField] StartTarget _startTarget;
     [SerializeField] TrackManager _trackManager;
-
+    public TrackManager TrackManager => _trackManager;
     private void Awake()
     {
         if (Instance != null && Instance != this)
             Destroy(gameObject);
         _instance = this;
     }
+    public override void StartMiniGame()
+    {
+        base.StartMiniGame();
+        _trackManager.StartGame();
+    }
+    
     public void GameEnded()
     {
         _startTarget.gameObject.SetActive(true);

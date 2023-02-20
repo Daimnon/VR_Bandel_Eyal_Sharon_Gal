@@ -14,6 +14,8 @@ public class RifleHandler : MonoBehaviour
     [SerializeField] private ShootType _shootType;
     [SerializeField] private Material _grappleMat;
     [SerializeField] private float _minPompaDistance = 2f, _maxPompaDistance = 20f, _pompaStartWidth = 0.25f, _pompaEndWidth = 0.25f, _pompaPullSpeed = 10;
+    [SerializeField] private bool _isToBeDestoryed;
+    [SerializeField] private float _destructionTime;
 
     private GameObject _pompaCurrentProjectile;
     private Transform _pompaCurrentProjectileTr;
@@ -29,8 +31,8 @@ public class RifleHandler : MonoBehaviour
     #region MonoBehaviour Callbacks
     private void Update()
     {
-        Debug.Log($"{LeftpinchAnimationAction.action.ReadValue<float>()}");
-        Debug.Log($"{RightpinchAnimationAction.action.ReadValue<float>()}");
+        //Debug.Log($"{LeftpinchAnimationAction.action.ReadValue<float>()}");
+        //Debug.Log($"{RightpinchAnimationAction.action.ReadValue<float>()}");
 
         if (_isEquiped && _canFire)
         {
@@ -71,7 +73,7 @@ public class RifleHandler : MonoBehaviour
     #region Fire Handling
     private void WeaponFireBtnDown()
     {
-        if (RightpinchAnimationAction.action.triggered)
+        if (RightpinchAnimationAction.action.WasPressedThisFrame())
         {
             ChooseRifleOnFireTrigger();
         }
@@ -108,6 +110,7 @@ public class RifleHandler : MonoBehaviour
             default:
                 break;
         }
+
     }
     private void ChooseRifleOnFireContinue()
     {
@@ -205,7 +208,7 @@ public class RifleHandler : MonoBehaviour
         }
         else
         {
-            Debug.Log("Pompa is not live");
+            //Debug.Log("Pompa is not live");
             return;
         }
     }
@@ -268,7 +271,7 @@ public class RifleHandler : MonoBehaviour
     {
         var firedBullet = Instantiate(_bulletPrefab, _bulletOriginTr.position, Quaternion.identity, _bulletContainer.transform);
         firedBullet.GetComponent<Rigidbody>().AddForce(this.transform.up.normalized*BulletSpeedMultiplier, ForceMode.Impulse);
-
+        Destroy(firedBullet);
     }
     #endregion
 
@@ -277,6 +280,14 @@ public class RifleHandler : MonoBehaviour
     {
         GameObject firedBullet = Instantiate(_bulletPrefab, _bulletOriginTr.position, Quaternion.identity, _bulletContainer.transform);
         firedBullet.GetComponent<Rigidbody>().AddForce(transform.up.normalized * BulletSpeedMultiplier, ForceMode.Impulse);
+        DestroyBullets(firedBullet);
+    }
+    private void DestroyBullets(GameObject bullet)
+    {
+        if (_isToBeDestoryed)
+        {
+            Destroy(bullet, _destructionTime);
+        }
     }
     #endregion
 
