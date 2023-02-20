@@ -40,7 +40,7 @@ public abstract class MiniGame : MonoBehaviour
     {
         SetIsActive(false);
         PointsGiver.TryGivePoint -= PointGiver_TryGivePoint;
-        scoreText.gameObject.SetActive(false);
+        //scoreText.gameObject.SetActive(false);
     }
 
     private void PointGiver_TryGivePoint(object sender, int points)
