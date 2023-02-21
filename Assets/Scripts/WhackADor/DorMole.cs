@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -8,6 +7,7 @@ public class DorMole : MonoBehaviour
 {
     [SerializeField] Transform _endPoint;
     [SerializeField] Transform _startPoint;
+    [SerializeField] int _scorePerWAKA;
     [SerializeField] float _speedMultiplyer;
     [SerializeField] float _magnitudeOffset;
     private int _hammerLayer = 9;
@@ -15,28 +15,28 @@ public class DorMole : MonoBehaviour
 
     private float _timeToPop = 0.3f;
 
-    public int SCORE;
-
     private bool _hasOtherFunctionality;
     public UnityEvent OnHit;
     public bool IsDoorUp { get => _isDoorUp; }
     public bool HasOtherFunctionality { get => _hasOtherFunctionality; set => _hasOtherFunctionality = value; }
 
-    private void OnCollisionEnter(Collision collision)
+
+    private void OnTriggerEnter(Collider other)
     {
-        if(IsDoorUp && collision.collider.gameObject.layer == _hammerLayer)
+        Debug.Log("Trigger is happening help");
+        if (IsDoorUp && other.gameObject.layer == _hammerLayer)
         {
-            if(HasOtherFunctionality)
+            if (HasOtherFunctionality)
             {
                 OnHit?.Invoke();
             }
             else
             {
-                // Add Score
+                WakaDorStation.Instance.IncreaseScoreBy(_scorePerWAKA);
                 MoveDorDown();
             }
-            
-            
+
+
             Debug.Log("MoleDor Hit!");
         }
     }
@@ -55,16 +55,16 @@ public class DorMole : MonoBehaviour
         //Vector3 direction = endPoint - startingPos;
         //direction = direction.normalized;
 
-        
+
         //var mag = (transform.position - endPoint.position).magnitude;
         while ((transform.position - endPoint.position).magnitude >= _magnitudeOffset)
         {
             //transform.position += movement * Time.deltaTime / _timeToPop;
-            transform.localPosition = Vector3.Lerp(transform.localPosition, endPoint.localPosition, Time.deltaTime*_speedMultiplyer);
+            transform.localPosition = Vector3.Lerp(transform.localPosition, endPoint.localPosition, Time.deltaTime * _speedMultiplyer);
             //transform.Translate(endPoint.localPosition * 0.75f * Time.deltaTime* _speedMultiplyer, Space.Self);
             yield return null;
         }
-        Debug.Log("YES") ;
+        Debug.Log("YES");
 
 
         transform.localPosition = endPoint.localPosition;

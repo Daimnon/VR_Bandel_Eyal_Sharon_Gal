@@ -271,8 +271,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _endPoint: {fileID: 7156047646008871944}
   _startPoint: {fileID: 1526144698392182627}
+  _scorePerWAKA: 1
   _speedMultiplyer: 1
   _magnitudeOffset: 0.1
+  OnHit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &4633809799163817959
 PrefabInstance:
   m_ObjectHideFlags: 0

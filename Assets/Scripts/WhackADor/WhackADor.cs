@@ -32,6 +32,7 @@ public class WhackADor : MonoBehaviour
         _starter.HasOtherFunctionality = false;
         _starter.MoveDorDown();
         StartCoroutine(RunGame());
+        WakaDorStation.Instance.StartMiniGame();
     }
 
     private IEnumerator RunGame()
@@ -78,6 +79,7 @@ public class WhackADor : MonoBehaviour
         }
 
         Setup();
+        WakaDorStation.Instance.GameEnded();
     }
 
     private IEnumerator PopDor(DorMole mole)
