@@ -1829,6 +1829,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: TP Station Lobby
       objectReference: {fileID: 0}
+    - target: {fileID: 1936053436204033608, guid: dd21a2be36cfaed4d80460638b70cfb4, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 12.14
+      objectReference: {fileID: 0}
+    - target: {fileID: 1936053436204033608, guid: dd21a2be36cfaed4d80460638b70cfb4, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1936053436204033608, guid: dd21a2be36cfaed4d80460638b70cfb4, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 8.65
+      objectReference: {fileID: 0}
     - target: {fileID: 1936053436204033615, guid: dd21a2be36cfaed4d80460638b70cfb4, type: 3}
       propertyPath: m_MatchOrientation
       value: 3
@@ -4804,6 +4816,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4861946948860571223, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
+      propertyPath: _shootType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4861946948860571223, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
       propertyPath: _pompaBullet
       value: 
       objectReference: {fileID: 8756671319498829598, guid: 925ce0c2bdc3f1d43a10e3af558c55d9, type: 3}
@@ -4823,6 +4839,14 @@ PrefabInstance:
       propertyPath: _bulletContainer
       value: 
       objectReference: {fileID: 7674827558451492701}
+    - target: {fileID: 4861946948860571223, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
+      propertyPath: _destructionTime
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4861946948860571223, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
+      propertyPath: _isToBeDestoryed
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4861946948860571223, guid: 76363ffe1bbce964a87de52204adce3b, type: 3}
       propertyPath: _bulletSpawnPoint
       value: 

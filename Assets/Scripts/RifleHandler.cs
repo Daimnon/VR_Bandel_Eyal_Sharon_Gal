@@ -271,7 +271,7 @@ public class RifleHandler : MonoBehaviour
     {
         var firedBullet = Instantiate(_bulletPrefab, _bulletOriginTr.position, Quaternion.identity, _bulletContainer.transform);
         firedBullet.GetComponent<Rigidbody>().AddForce(this.transform.up.normalized*BulletSpeedMultiplier, ForceMode.Impulse);
-        Destroy(firedBullet);
+        DestroyBullets(firedBullet);
     }
     #endregion
 
