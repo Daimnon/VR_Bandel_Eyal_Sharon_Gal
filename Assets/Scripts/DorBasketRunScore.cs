@@ -7,9 +7,21 @@ public class DorBasketRunScore : MiniGame
 {
     public static DorBasketRunScore Instance { get; private set; }
 
+    [SerializeField] Transform Player;
     [SerializeField] private float timeBetweenShots = 2f, shootingPower = 20f;
     [SerializeField] private Transform shootingPoint, lid;
     [SerializeField] private Transform gameContainerTransform;
+    [SerializeField] private Vector3 shootPointOffSet = Vector3.zero;
+    [SerializeField] private List<DorStartingPositions> dorManageTool;
+
+    [Serializable]
+    public struct DorStartingPositions
+    {
+        public Transform ballGO;
+        public Transform ballStartingPos;
+
+        public void ResetPosition() { ballGO.position = ballStartingPos.position; }
+    }
 
     private List<Rigidbody> gameContainer = new List<Rigidbody>();
     private WaitForSeconds waitTimeBetweenShots;
@@ -25,6 +37,15 @@ public class DorBasketRunScore : MiniGame
     private void Start()
     {
         waitTimeBetweenShots = new WaitForSeconds(timeBetweenShots);
+        ResetEvent.G_Reset += ResetEvent_G_Reset;
+    }
+
+    private void ResetEvent_G_Reset(object sender, EventArgs e)
+    {
+        foreach (var item in dorManageTool)
+            item.ResetPosition();
+        DeactivateGame();
+        StartMiniGame();
     }
 
     private void Update()
@@ -34,6 +55,7 @@ public class DorBasketRunScore : MiniGame
 
         if (gameContainer.Count >= 5)
         {
+            shootingPoint.gameObject.transform.LookAt(Player.position + shootPointOffSet);
             SetIsActive(false);
             StartCoroutine(ShootAllAmmo());
         }
@@ -69,6 +91,7 @@ public class DorBasketRunScore : MiniGame
         {
             yield return waitTimeBetweenShots;
             dor.transform.position = shootingPoint.position;
+            dor.transform.rotation = shootingPoint.rotation;
             dor.AddForce(shootingPoint.forward * shootingPower, ForceMode.Impulse);
             listToRemove.Add(dor);
         }

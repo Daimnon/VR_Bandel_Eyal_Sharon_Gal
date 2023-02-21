@@ -73,7 +73,7 @@ public class TrackHandler : MonoBehaviour
     }
     public void StartTrack()
     {
-        //spawn dors every X seconds
+        //spawn dorManageTool every X seconds
         _isTrackActive = true;
         _currentSpawnTime = _spawnCooldown;
         _currentTrackTime = _trackTotalTime;
