@@ -243,6 +243,7 @@ public class RifleHandler : MonoBehaviour
 
             if (_pompaCurrentProjectileScript.ObjectConnected && Vector3.Distance(_pompaCurrentProjectileTr.position, _bulletOriginTr.position) <= _minPompaDistance)
             {
+                // make grab hips auto
                 _attachedToPompaObjectRb = _pompaCurrentProjectileScript.ConnectedObjectRb;
                 RemovePompaProjectile();
                 _attachedObject = true;
