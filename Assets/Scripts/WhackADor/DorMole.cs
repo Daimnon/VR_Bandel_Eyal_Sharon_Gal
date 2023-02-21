@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+
 
 public class DorMole : MonoBehaviour
 {
@@ -13,12 +15,27 @@ public class DorMole : MonoBehaviour
 
     private float _timeToPop = 0.3f;
 
+    public int SCORE;
+
+    private bool _hasOtherFunctionality;
+    public UnityEvent OnHit;
+    public bool IsDoorUp { get => _isDoorUp; }
+    public bool HasOtherFunctionality { get => _hasOtherFunctionality; set => _hasOtherFunctionality = value; }
+
     private void OnCollisionEnter(Collision collision)
     {
-        if(_isDoorUp && collision.collider.gameObject.layer == _hammerLayer)
+        if(IsDoorUp && collision.collider.gameObject.layer == _hammerLayer)
         {
-            // Add Score
-            MoveDorDown();
+            if(HasOtherFunctionality)
+            {
+                OnHit?.Invoke();
+            }
+            else
+            {
+                // Add Score
+                MoveDorDown();
+            }
+            
             
             Debug.Log("MoleDor Hit!");
         }

@@ -13,9 +13,24 @@ public class WhackADor : MonoBehaviour
     int _numberOfCurrentlyActiveDors = 0;
     [SerializeField] private List<DorMole> _freeDorMoles = new List<DorMole>();
     [SerializeField] private List<DorMole> _occupiedDorMoles = new List<DorMole>();
+    [SerializeField] private DorMole _starter;
 
     private void Start()
     {
+        //StartCoroutine(RunGame());
+        Setup();
+    }
+
+    public void Setup()
+    {
+        _starter.HasOtherFunctionality = true;
+        _starter.MoveDorUp();
+    }
+
+    public void StartGame()
+    {
+        _starter.HasOtherFunctionality = false;
+        _starter.MoveDorDown();
         StartCoroutine(RunGame());
     }
 
@@ -61,6 +76,8 @@ public class WhackADor : MonoBehaviour
             _timeRemainingForGame -= _popTimer;
             
         }
+
+        Setup();
     }
 
     private IEnumerator PopDor(DorMole mole)
@@ -73,10 +90,14 @@ public class WhackADor : MonoBehaviour
         _numberOfCurrentlyActiveDors++;
 
         yield return new WaitForSeconds(_poppedDorTimer);
+
         _freeDorMoles.Add(mole);
         _occupiedDorMoles.Remove(mole);
         _numberOfCurrentlyActiveDors--;
-        mole.MoveDorDown();
+        if(mole.IsDoorUp)
+        {
+            mole.MoveDorDown();
+        }
 
     }
 }
