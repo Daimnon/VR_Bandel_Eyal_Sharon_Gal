@@ -7,7 +7,7 @@ public class TrackHandler : MonoBehaviour
     [SerializeField] Transform _startPos;
     [SerializeField] Transform _endPos;
     [SerializeField] SmallDorPool _dorPool;
-    Vector3 _trackDirection;
+    [SerializeField] Vector3 _trackDirection;
     [SerializeField] List<DorGotShot> _trackObjects;
     [SerializeField] int _maxObjectsOnTrack;
     [SerializeField] float _trackTotalTime;

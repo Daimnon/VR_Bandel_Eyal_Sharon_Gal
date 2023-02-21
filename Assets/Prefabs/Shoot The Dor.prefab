@@ -1045,7 +1045,7 @@ MonoBehaviour:
   _maxObjectsOnTrack: 5
   _trackTotalTime: 15
   _spawnCooldown: 0.3
-  _trackSpeed: 5
+  _trackSpeed: 4
   _trackManager: {fileID: 1952506588308876721}
 --- !u!1 &6315943336568207674
 GameObject:
