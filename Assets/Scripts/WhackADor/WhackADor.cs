@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class WhackADor : MonoBehaviour
 {
-    bool _isRunning;
+    bool _isGameRunning;
     [SerializeField] float _timeRemainingForGame;
     [SerializeField] float _gameTime;
     [SerializeField] float _popTimer;
@@ -13,24 +13,22 @@ public class WhackADor : MonoBehaviour
     int _numberOfCurrentlyActiveDors = 0;
     [SerializeField] private List<DorMole> _freeDorMoles = new List<DorMole>();
     [SerializeField] private List<DorMole> _occupiedDorMoles = new List<DorMole>();
-    [SerializeField] private DorMole _starter;
+
+    public bool IsGameRunning { get => _isGameRunning; }
 
     private void Start()
     {
-        //StartCoroutine(RunGame());
         Setup();
     }
 
     public void Setup()
     {
-        _starter.HasOtherFunctionality = true;
-        _starter.MoveDorUp();
+        _isGameRunning = false;
     }
 
     public void StartGame()
     {
-        _starter.HasOtherFunctionality = false;
-        _starter.MoveDorDown();
+        _isGameRunning = true;
         StartCoroutine(RunGame());
         WakaDorStation.Instance.StartMiniGame();
     }
