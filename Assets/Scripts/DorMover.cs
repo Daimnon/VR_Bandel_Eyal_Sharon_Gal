@@ -5,52 +5,29 @@ using UnityEngine;
 public class DorMover : MonoBehaviour
 {
     [SerializeField] private float _speed;
-    [SerializeField] private bool _shouldStartCoroutine = false, _shouldStopLerping = false, _stopRagdoll = false;
-    [SerializeField] private Rigidbody _rb;
-    [SerializeField] private GameObject _dor;
     [SerializeField] private Transform _transformToMove;
+    [SerializeField] private bool _shouldStartCoroutine = false, _shouldStopLerping = false;
     public bool ShouldStopLerping { get => _shouldStopLerping; set => _shouldStopLerping = value; }
 
     private Transform _targetPos;
     private Vector3 _positionToMoveTo;
 
-    private void Awake()
-    {
-        if (_rb.useGravity)
-            _rb.useGravity = false;
-
-        if (_rb.isKinematic)
-            _rb.isKinematic = true;
-    }
     private void Start()
     {
         _targetPos = AIManager.Instance.ChooseRandomPatrolPos();
         _positionToMoveTo = _targetPos.position;
-
-        if (_stopRagdoll)
-        {
-            foreach (Rigidbody childRb in _dor.GetComponentsInChildren<Rigidbody>())
-            {
-                childRb.useGravity = false;
-                childRb.isKinematic = true;
-            }
-        }
     }
     private void Update()
     {
         if (_shouldStartCoroutine)
         {
-            //foreach (Rigidbody childRb in _dor.GetComponentsInChildren<Rigidbody>())
-            //{
-            //    childRb.useGravity = true;
-            //    childRb.isKinematic = false;
-            //}
             StartCoroutine(LerpPosition(_positionToMoveTo, 10));
             _shouldStartCoroutine = false;
         }
 
-        if (_shouldStartCoroutine && transform.position == _targetPos.position)
+        if (transform.position == _targetPos.position)
         {
+            _targetPos = AIManager.Instance.ChooseRandomPatrolPos();
             _positionToMoveTo = _targetPos.position;
 
             StartCoroutine(LerpPosition(_positionToMoveTo, 5));

@@ -23,6 +23,7 @@ public class RifleHandler : MonoBehaviour
     private Rigidbody _attachedToPompaObjectRb;
     private LineRenderer _lineRenderer;
 
+    private const string _dorTag = "Dor";
     private bool _isEquiped = false, _canFire = false, _isPompaLive = false, _isPompaReturning, _attachedObject = false;
     
     public InputActionProperty LeftpinchAnimationAction, RightpinchAnimationAction;
@@ -243,7 +244,6 @@ public class RifleHandler : MonoBehaviour
 
             if (_pompaCurrentProjectileScript.ObjectConnected && Vector3.Distance(_pompaCurrentProjectileTr.position, _bulletOriginTr.position) <= _minPompaDistance)
             {
-                // make grab hips auto
                 _attachedToPompaObjectRb = _pompaCurrentProjectileScript.ConnectedObjectRb;
                 RemovePompaProjectile();
                 _attachedObject = true;

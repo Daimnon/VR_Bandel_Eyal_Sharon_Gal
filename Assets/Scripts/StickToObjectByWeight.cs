@@ -37,8 +37,18 @@ public class StickToObjectByWeight : MonoBehaviour
         if (!other.gameObject.CompareTag(_weaponTag) && other.gameObject.TryGetComponent(out Rigidbody rb) && rb.mass <= _maxPullMass)
         {
             _connectedObjectRb = rb;
+
+            BasicDor basicDor;
+
+            if (_connectedObjectRb.CompareTag(_dorTag))
+            {
+                basicDor = _connectedObjectRb.GetComponentInParent<BasicDor>();
+                _connectedObjectRb = basicDor.HipsRb;
+            }
+
             _connectedObjectRb.useGravity = false;
             _connectedObjectRb.isKinematic = true;
+
             _connectedObjectRb.GetComponent<Collider>().enabled = false;
 
             foreach (Rigidbody childRb in _connectedObjectRb.GetComponentsInChildren<Rigidbody>())
