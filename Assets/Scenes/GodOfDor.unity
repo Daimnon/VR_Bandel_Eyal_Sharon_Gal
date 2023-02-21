@@ -1896,6 +1896,26 @@ PrefabInstance:
       propertyPath: m_fontSize
       value: 128
       objectReference: {fileID: 0}
+    - target: {fileID: 8241373423607135120, guid: dd21a2be36cfaed4d80460638b70cfb4, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -4.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8241373423607135120, guid: dd21a2be36cfaed4d80460638b70cfb4, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.1140113
+      objectReference: {fileID: 0}
+    - target: {fileID: 8241373423607135120, guid: dd21a2be36cfaed4d80460638b70cfb4, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.9934795
+      objectReference: {fileID: 0}
+    - target: {fileID: 8241373423607135120, guid: dd21a2be36cfaed4d80460638b70cfb4, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 8.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8241373423607135120, guid: dd21a2be36cfaed4d80460638b70cfb4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 193.093
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dd21a2be36cfaed4d80460638b70cfb4, type: 3}
 --- !u!4 &1367434507 stripped
