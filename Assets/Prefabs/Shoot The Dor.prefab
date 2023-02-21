@@ -546,6 +546,7 @@ MonoBehaviour:
   _trackTotalTime: 25
   _spawnCooldown: 4
   _trackSpeed: 1
+  _isOpposite: 1
   _trackManager: {fileID: 1952506588308876721}
 --- !u!1 &2122780862966893278
 GameObject:
@@ -1045,7 +1046,8 @@ MonoBehaviour:
   _maxObjectsOnTrack: 5
   _trackTotalTime: 15
   _spawnCooldown: 0.3
-  _trackSpeed: 5
+  _trackSpeed: 4
+  _isOpposite: 0
   _trackManager: {fileID: 1952506588308876721}
 --- !u!1 &6315943336568207674
 GameObject:
@@ -1241,6 +1243,7 @@ MonoBehaviour:
   _trackTotalTime: 20
   _spawnCooldown: 1.5
   _trackSpeed: 2
+  _isOpposite: 0
   _trackManager: {fileID: 1952506588308876721}
 --- !u!1 &7774715629778420444
 GameObject:

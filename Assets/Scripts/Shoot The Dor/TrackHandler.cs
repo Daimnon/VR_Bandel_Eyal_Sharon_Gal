@@ -80,7 +80,9 @@ public class TrackHandler : MonoBehaviour
     }
     public void MoveDors()
     {
-        var movement = (transform.localPosition + _trackDirection).normalized * _trackSpeed *Time.deltaTime;
+        var movement = (transform.localPosition + _trackDirection);
+        movement = movement.normalized;
+        movement *= _trackSpeed *Time.deltaTime;
         if (_trackObjects.Count != 0)
         {
             var toBeRemoved = new List<DorGotShot>();
@@ -109,7 +111,7 @@ public class TrackHandler : MonoBehaviour
     {
         float offset = 0.5f;
         var distance = dor.transform.position - _endPos.transform.position;
-        if (distance.x <= offset && distance.y < offset && distance.z < offset)
+        if (Mathf.Abs(distance.x) <= offset && Mathf.Abs(distance.y) < offset && Mathf.Abs(distance.z) < offset)
         {
             //reached destination
             return true;

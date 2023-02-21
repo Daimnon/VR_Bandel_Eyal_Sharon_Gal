@@ -1705,7 +1705,7 @@ MonoBehaviour:
   _highScoreText: {fileID: 9152257340595335613}
   Player: {fileID: 0}
   timeBetweenShots: 2
-  shootingPower: 150
+  shootingPower: 75
   shootingPoint: {fileID: 7943705570440291902}
   lid: {fileID: 7943705570540016847}
   gameContainerTransform: {fileID: 7943705568926996413}
