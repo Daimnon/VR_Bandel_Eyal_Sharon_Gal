@@ -15,12 +15,13 @@ public class GrabRemover : MonoBehaviour
 
     private void Start()
     {
+        GrabRemoveEvent.RemoveGrab += GrabRemoveEvent_RemoveGrab;
         ResetEvent.G_Reset += ResetEvent_G_Reset;
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void GrabRemoveEvent_RemoveGrab(object sender, GrabRemover e)
     {
-        if (other.gameObject.layer == Mathf.Log(_removeLayer.value))
+        if (e == this)
             grabInteractable.enabled = false;
     }
 
