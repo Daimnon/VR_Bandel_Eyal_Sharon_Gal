@@ -10,8 +10,10 @@ public abstract class MiniGame : MonoBehaviour
 
     [SerializeField] protected string[] _pointGiverTags; 
     [SerializeField] private TextMeshPro scoreText;
+    [SerializeField] private TextMeshPro _highScoreText;
 
     private int playerScore = 0;
+    private int _highScore;
     private bool isActive;
 
     private void Awake(){ DeactivateGame(); }
@@ -38,6 +40,11 @@ public abstract class MiniGame : MonoBehaviour
 
     protected virtual void DeactivateGame()
     {
+        if (_highScore < playerScore)
+        {
+            _highScore = playerScore;
+            _highScoreText.text = "High Score: " + playerScore;
+        }
         SetIsActive(false);
         PointsGiver.TryGivePoint -= PointGiver_TryGivePoint;
         //scoreText.gameObject.SetActive(false);
