@@ -5,11 +5,13 @@ using UnityEngine;
 public class DorMover : MonoBehaviour
 {
     [SerializeField] private float _speed;
-    [SerializeField] private bool _shouldStartCoroutine = false, _shouldStopLerping = false;
+    [SerializeField] private bool _shouldStartCoroutine = false, _shouldStopLerping = false, _stopRagdoll = false;
     [SerializeField] private Rigidbody _rb;
+    [SerializeField] private GameObject _dor;
+    [SerializeField] private Transform _transformToMove;
     public bool ShouldStopLerping { get => _shouldStopLerping; set => _shouldStopLerping = value; }
 
-    private Transform _transformToMove, _targetPos;
+    private Transform _targetPos;
     private Vector3 _positionToMoveTo;
 
     private void Awake()
@@ -23,12 +25,26 @@ public class DorMover : MonoBehaviour
     private void Start()
     {
         _targetPos = AIManager.Instance.ChooseRandomPatrolPos();
+        _positionToMoveTo = _targetPos.position;
+
+        if (_stopRagdoll)
+        {
+            foreach (Rigidbody childRb in _dor.GetComponentsInChildren<Rigidbody>())
+            {
+                childRb.useGravity = false;
+                childRb.isKinematic = true;
+            }
+        }
     }
     private void Update()
     {
         if (_shouldStartCoroutine)
         {
-            _positionToMoveTo = _targetPos.position;
+            //foreach (Rigidbody childRb in _dor.GetComponentsInChildren<Rigidbody>())
+            //{
+            //    childRb.useGravity = true;
+            //    childRb.isKinematic = false;
+            //}
             StartCoroutine(LerpPosition(_positionToMoveTo, 10));
             _shouldStartCoroutine = false;
         }
