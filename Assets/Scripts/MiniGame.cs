@@ -9,7 +9,7 @@ public abstract class MiniGame : MonoBehaviour
     public static event EventHandler OnAnyScoreIncrease;
 
     [SerializeField] protected string[] _pointGiverTags; 
-    [SerializeField] private TextMeshPro scoreText;
+    [SerializeField] protected TextMeshPro scoreText;
 
     private int playerScore = 0;
     private bool isActive;
