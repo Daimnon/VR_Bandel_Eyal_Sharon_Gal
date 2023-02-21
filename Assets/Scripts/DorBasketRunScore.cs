@@ -99,6 +99,7 @@ public class DorBasketRunScore : MiniGame
         foreach (var dor in listToRemove)
             gameContainer.Remove(dor);
 
+        yield return waitTimeBetweenShots;
         lid.gameObject.SetActive(true);
     }
 
