@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2700166792656655989}
   m_Layer: 0
-  m_Name: Pin Ragdoll Man
+  m_Name: Pinned Ragdoll Man
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

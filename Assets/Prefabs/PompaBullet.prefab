@@ -251,3 +251,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21fb7af54274d1941a9776cde7cebb49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _maxPullMass: 25
+  _rb: {fileID: 8756671319498829599}

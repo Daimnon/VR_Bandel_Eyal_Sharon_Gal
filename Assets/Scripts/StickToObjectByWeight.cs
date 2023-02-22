@@ -6,12 +6,12 @@ public class StickToObjectByWeight : MonoBehaviour
 {
     [SerializeField] private float _maxPullMass = 25;
 
-    private Vector3 _originalPos = Vector3.zero;
+    //private Vector3 _originalPos = Vector3.zero;
 
     private const string _weaponTag = "Rifle";
     private const string _dorTag = "Dor";
 
-    private Rigidbody _rb;
+    [SerializeField] private Rigidbody _rb;
     public Rigidbody Rb => _rb;
 
     private Rigidbody _connectedObjectRb;
@@ -22,8 +22,7 @@ public class StickToObjectByWeight : MonoBehaviour
 
     private void Awake()
     {
-        _rb = GetComponent<Rigidbody>();
-        _originalPos = transform.position;
+        //_originalPos = transform.position;
     }
     private void Update()
     {
@@ -55,10 +54,11 @@ public class StickToObjectByWeight : MonoBehaviour
         BasicDor basicDor = rb.GetComponentInParent<BasicDor>();
         DorMover dorMover = rb.GetComponentInParent<DorMover>();
         _connectedObjectRb = basicDor.HipsRb;
-        basicDor.StopAllRagdolls();
 
         if (dorMover.IsLerping)
             dorMover.ShouldStopLerping = true;
+
+        basicDor.StopAllRagdolls();
 
         _objectConnected = true;
     }
