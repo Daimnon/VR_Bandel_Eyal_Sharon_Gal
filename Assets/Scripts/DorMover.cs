@@ -12,7 +12,6 @@ public class DorMover : MonoBehaviour
 
     private float _patrolTime = 0.0f;
     private Transform _targetTransform;
-    private Vector3 _positionToMoveTo;
     private IEnumerator _lerpCoroutine;
 
     private void Start()
@@ -23,20 +22,21 @@ public class DorMover : MonoBehaviour
             _speed = 1.0f;
 
         _patrolTime = Vector3.Distance(transform.position, _targetTransform.position) / _speed;
-        _positionToMoveTo = _targetTransform.position;
     }
     private void Update()
     {
         if (_shouldStopLerping)
         {
             StopCoroutine(_lerpCoroutine);
-            //_shouldStopLerping = false;
+            _shouldStartCoroutine = false;
+            _shouldStopLerping = false;
             return;
         }
 
         if (_shouldStartCoroutine)
         {
-            _lerpCoroutine = LerpPosition(_positionToMoveTo, _patrolTime);
+            transform.LookAt(_targetTransform);
+            _lerpCoroutine = LerpPosition(_targetTransform.position, _patrolTime);
             StartCoroutine(_lerpCoroutine);
             _isLerping = true;
             _shouldStartCoroutine = false;
@@ -50,10 +50,10 @@ public class DorMover : MonoBehaviour
                 _speed = 1.0f;
 
             _patrolTime = Vector3.Distance(transform.position, _targetTransform.position) / _speed;
-            _positionToMoveTo = _targetTransform.position;
+            _targetTransform.position = _targetTransform.position;
 
-            
-            _lerpCoroutine = LerpPosition(_positionToMoveTo, _patrolTime);
+            transform.LookAt(_targetTransform);
+            _lerpCoroutine = LerpPosition(_targetTransform.position, _patrolTime);
             StartCoroutine(_lerpCoroutine);
             _shouldStartCoroutine = false;
         }
@@ -72,8 +72,5 @@ public class DorMover : MonoBehaviour
         }
 
         _transformToMove.position = targetPosition;
-
-        if (_shouldStopLerping)
-            _shouldStopLerping = false;
     }
 }
