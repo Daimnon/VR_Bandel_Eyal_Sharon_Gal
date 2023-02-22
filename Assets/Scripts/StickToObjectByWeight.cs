@@ -40,37 +40,7 @@ public class StickToObjectByWeight : MonoBehaviour
                 GrabDor(rb);
             else
                 GrabNonDorObject(rb);
-            
-            //_rb.useGravity = false;
         }
-        /*
-        if (!other.gameObject.CompareTag(_weaponTag) && other.gameObject.TryGetComponent(out Rigidbody rb) && rb.mass <= _maxPullMass)
-        {
-            _connectedObjectRb = rb;
-
-            BasicDor basicDor;
-
-            if (_connectedObjectRb.CompareTag(_dorTag))
-            {
-                basicDor = _connectedObjectRb.GetComponentInParent<BasicDor>();
-                _connectedObjectRb = basicDor.HipsRb;
-            }
-
-            _connectedObjectRb.useGravity = false;
-            _connectedObjectRb.isKinematic = true;
-
-            _connectedObjectRb.GetComponent<Collider>().enabled = false;
-
-            foreach (Rigidbody childRb in _connectedObjectRb.GetComponentsInChildren<Rigidbody>())
-            {
-                childRb.useGravity = false;
-                childRb.isKinematic = true;
-            }
-
-            _rb.useGravity = false;
-            _objectConnected = true;
-        }
-        */
     }
 
     private void GrabNonDorObject(Rigidbody rb)
@@ -83,8 +53,13 @@ public class StickToObjectByWeight : MonoBehaviour
     private void GrabDor(Rigidbody rb)
     {
         BasicDor basicDor = rb.GetComponentInParent<BasicDor>();
+        DorMover dorMover = rb.GetComponentInParent<DorMover>();
         _connectedObjectRb = basicDor.HipsRb;
         basicDor.StopAllRagdolls();
+
+        if (dorMover.IsLerping)
+            dorMover.ShouldStopLerping = true;
+
         _objectConnected = true;
     }
 }

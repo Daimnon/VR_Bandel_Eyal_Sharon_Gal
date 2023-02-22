@@ -4,51 +4,76 @@ using UnityEngine;
 
 public class DorMover : MonoBehaviour
 {
-    [SerializeField] private float _speed;
     [SerializeField] private Transform _transformToMove;
+    [SerializeField] private float _speed = 1.0f;
     [SerializeField] private bool _shouldStartCoroutine = false, _isLerping = false, _shouldStopLerping = false;
+    public bool IsLerping => _isLerping;
     public bool ShouldStopLerping { get => _shouldStopLerping; set => _shouldStopLerping = value; }
 
-    private Transform _targetPos;
+    private float _patrolTime = 0.0f;
+    private Transform _targetTransform;
     private Vector3 _positionToMoveTo;
+    private IEnumerator _lerpCoroutine;
 
     private void Start()
     {
-        _targetPos = AIManager.Instance.ChooseRandomPatrolPos();
-        _positionToMoveTo = _targetPos.position;
+        _targetTransform = AIManager.Instance.ChooseRandomPatrolPos();
+
+        if (_speed <= 0)
+            _speed = 1.0f;
+
+        _patrolTime = Vector3.Distance(transform.position, _targetTransform.position) / _speed;
+        _positionToMoveTo = _targetTransform.position;
     }
     private void Update()
     {
+        if (_shouldStopLerping)
+        {
+            StopCoroutine(_lerpCoroutine);
+            //_shouldStopLerping = false;
+            return;
+        }
+
         if (_shouldStartCoroutine)
         {
-            StartCoroutine(LerpPosition(_positionToMoveTo, 10));
+            _lerpCoroutine = LerpPosition(_positionToMoveTo, _patrolTime);
+            StartCoroutine(_lerpCoroutine);
             _isLerping = true;
             _shouldStartCoroutine = false;
         }
 
-        if (transform.position == _targetPos.position)
+        if (transform.position == _targetTransform.position)
         {
-            _targetPos = AIManager.Instance.ChooseRandomPatrolPos();
-            _positionToMoveTo = _targetPos.position;
+            _targetTransform = AIManager.Instance.ChooseRandomPatrolPos();
 
-            StartCoroutine(LerpPosition(_positionToMoveTo, 5));
+            if (_speed <= 0)
+                _speed = 1.0f;
+
+            _patrolTime = Vector3.Distance(transform.position, _targetTransform.position) / _speed;
+            _positionToMoveTo = _targetTransform.position;
+
+            
+            _lerpCoroutine = LerpPosition(_positionToMoveTo, _patrolTime);
+            StartCoroutine(_lerpCoroutine);
             _shouldStartCoroutine = false;
         }
-
-        if (_shouldStopLerping)
-            StopCoroutine(LerpPosition(_positionToMoveTo, 5));
     }
 
     private IEnumerator LerpPosition(Vector3 targetPosition, float duration)
     {
         float time = 0;
         Vector3 startPosition = _transformToMove.position;
-        while (time < duration)
+
+        while (time < duration && !_shouldStopLerping)
         {
             _transformToMove.position = Vector3.Lerp(startPosition, targetPosition, time / duration);
             time += Time.deltaTime;
             yield return null;
         }
+
         _transformToMove.position = targetPosition;
+
+        if (_shouldStopLerping)
+            _shouldStopLerping = false;
     }
 }
