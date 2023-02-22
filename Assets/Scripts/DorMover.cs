@@ -6,7 +6,7 @@ public class DorMover : MonoBehaviour
 {
     [SerializeField] private float _speed;
     [SerializeField] private Transform _transformToMove;
-    [SerializeField] private bool _shouldStartCoroutine = false, _shouldStopLerping = false;
+    [SerializeField] private bool _shouldStartCoroutine = false, _isLerping = false, _shouldStopLerping = false;
     public bool ShouldStopLerping { get => _shouldStopLerping; set => _shouldStopLerping = value; }
 
     private Transform _targetPos;
@@ -22,6 +22,7 @@ public class DorMover : MonoBehaviour
         if (_shouldStartCoroutine)
         {
             StartCoroutine(LerpPosition(_positionToMoveTo, 10));
+            _isLerping = true;
             _shouldStartCoroutine = false;
         }
 

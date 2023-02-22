@@ -8,7 +8,7 @@ public class BasicDor : MonoBehaviour
     [SerializeField] private Rigidbody _hipsRb;
     public Rigidbody HipsRb => _hipsRb;
 
-    [SerializeField] private bool _stopAllRagdoll = false, _useGravityAll = true;
+    [SerializeField] private bool _stopAllRagdollOnStart = false, _useGravityAllOnStart = true;
 
     private delegate void DorState();
     private DorState _state;
@@ -19,20 +19,13 @@ public class BasicDor : MonoBehaviour
     }
     private void Start()
     {
-        if (_stopAllRagdoll && !_useGravityAll)
+        if (_stopAllRagdollOnStart && !_useGravityAllOnStart)
         {
-            foreach (Rigidbody childRb in GetComponentsInChildren<Rigidbody>())
-            {
-                childRb.useGravity = false;
-                childRb.isKinematic = true;
-            }
+            StopAllRagdolls();
         }
-        else if (!_stopAllRagdoll && !_useGravityAll)
+        else if (!_stopAllRagdollOnStart && !_useGravityAllOnStart)
         {
-            foreach (Rigidbody childRb in GetComponentsInChildren<Rigidbody>())
-            {
-                childRb.useGravity = false;
-            }
+            
         }
     }
     private void Update()
@@ -47,5 +40,20 @@ public class BasicDor : MonoBehaviour
     private void NonRagdoll()
     {
 
+    }
+    public void StopAllRagdolls()
+    {
+        foreach (Rigidbody childRb in GetComponentsInChildren<Rigidbody>())
+        {
+            childRb.useGravity = false;
+            childRb.isKinematic = true;
+        }
+    }
+    public void StopAllGravity()
+    {
+        foreach (Rigidbody childRb in GetComponentsInChildren<Rigidbody>())
+        {
+            childRb.useGravity = false;
+        }
     }
 }

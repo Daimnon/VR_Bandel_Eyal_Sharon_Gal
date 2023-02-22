@@ -36,6 +36,16 @@ public class StickToObjectByWeight : MonoBehaviour
     {
         if (!other.gameObject.CompareTag(_weaponTag) && other.gameObject.TryGetComponent(out Rigidbody rb) && rb.mass <= _maxPullMass)
         {
+            if (rb.transform.root.CompareTag(_dorTag))
+                GrabDor(rb);
+            else
+                GrabNonDorObject(rb);
+            
+            //_rb.useGravity = false;
+        }
+        /*
+        if (!other.gameObject.CompareTag(_weaponTag) && other.gameObject.TryGetComponent(out Rigidbody rb) && rb.mass <= _maxPullMass)
+        {
             _connectedObjectRb = rb;
 
             BasicDor basicDor;
@@ -60,5 +70,21 @@ public class StickToObjectByWeight : MonoBehaviour
             _rb.useGravity = false;
             _objectConnected = true;
         }
+        */
+    }
+
+    private void GrabNonDorObject(Rigidbody rb)
+    {
+        _connectedObjectRb = rb;
+        _connectedObjectRb.useGravity = false;
+        _connectedObjectRb.isKinematic = true;
+        _objectConnected = true;
+    }
+    private void GrabDor(Rigidbody rb)
+    {
+        BasicDor basicDor = rb.GetComponentInParent<BasicDor>();
+        _connectedObjectRb = basicDor.HipsRb;
+        basicDor.StopAllRagdolls();
+        _objectConnected = true;
     }
 }
