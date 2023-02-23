@@ -546,7 +546,6 @@ MonoBehaviour:
   _trackTotalTime: 25
   _spawnCooldown: 4
   _trackSpeed: 1
-  _isOpposite: 1
   _trackManager: {fileID: 1952506588308876721}
 --- !u!1 &2122780862966893278
 GameObject:
@@ -1047,7 +1046,6 @@ MonoBehaviour:
   _trackTotalTime: 15
   _spawnCooldown: 0.3
   _trackSpeed: 4
-  _isOpposite: 0
   _trackManager: {fileID: 1952506588308876721}
 --- !u!1 &6315943336568207674
 GameObject:
@@ -1183,7 +1181,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7206416362070415702}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1, y: 3, z: 3.727}
+  m_LocalPosition: {x: 0.9999995, y: 3, z: 3.7270005}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2287551922565966108}
@@ -1243,7 +1241,6 @@ MonoBehaviour:
   _trackTotalTime: 20
   _spawnCooldown: 1.5
   _trackSpeed: 2
-  _isOpposite: 0
   _trackManager: {fileID: 1952506588308876721}
 --- !u!1 &7774715629778420444
 GameObject:
