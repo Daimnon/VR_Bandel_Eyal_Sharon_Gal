@@ -28,7 +28,7 @@ public class TrackHandler : MonoBehaviour
         if (!_dorPool)
             throw new System.Exception("Track do not have dor pool");
 
-        _trackDirection = _endPos.localPosition - _startPos.localPosition;
+        _trackDirection = _endPos.position - _startPos.position;
     }
     private void OnValidate()
     {
@@ -95,7 +95,7 @@ public class TrackHandler : MonoBehaviour
                 }
                 else
                 {
-                    dor.transform.Translate(movement);
+                    dor.transform.Translate(movement,Space.World);
                 }
             }
             if (toBeRemoved.Count > 0)
