@@ -44,6 +44,8 @@ public class DorBasketRunScore : MiniGame
     {
         foreach (var item in dorManageTool)
             item.ResetPosition();
+
+        gameContainer.Clear();
         DeactivateGame();
         StartMiniGame();
     }
