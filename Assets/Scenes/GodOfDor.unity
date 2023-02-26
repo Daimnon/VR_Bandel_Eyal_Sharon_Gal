@@ -1598,7 +1598,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh226398
+  m_Name: pb_Mesh-489020
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1779,7 +1779,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh233814
+  m_Name: pb_Mesh-489032
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2005,7 +2005,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh234078
+  m_Name: pb_Mesh-488996
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2640,6 +2640,10 @@ PrefabInstance:
       propertyPath: Player
       value: 
       objectReference: {fileID: 1572585323}
+    - target: {fileID: 7943705569187591541, guid: 5ea0ac408b1fcdd40a1a89b8f9219648, type: 3}
+      propertyPath: dorManageTool.Array.size
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 7943705569187591541, guid: 5ea0ac408b1fcdd40a1a89b8f9219648, type: 3}
       propertyPath: dorManageTool.Array.data[0].ballGO
       value: 
@@ -3544,7 +3548,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: cfa3bb2143901934e9fc5c52d5ee7783, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 72786d7565c1fdb4f8e1647341a25458, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.2
   m_Pitch: 1
@@ -6981,6 +6985,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 36
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1964327668 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2165082850777684947, guid: 0d783162ade098a4fa83f0358c672d2d, type: 3}
+  m_PrefabInstance: {fileID: 8397414923954840685}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1964327669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1964327668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d49230bebf0aca242804736153b0ee49, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2066092874
 PrefabInstance:
   m_ObjectHideFlags: 0
