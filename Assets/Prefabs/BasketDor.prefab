@@ -286,9 +286,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '0
-
-'
+  m_text: 'High Score: 0'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -315,8 +313,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 15
-  m_fontSizeBase: 15
+  m_fontSize: 5
+  m_fontSizeBase: 5
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1784,7 +1782,7 @@ MonoBehaviour:
   _highScoreText: {fileID: 9152257340595335613}
   Player: {fileID: 0}
   timeBetweenShots: 2
-  shootingPower: 75
+  shootingPower: 110
   shootingPoint: {fileID: 7943705570440291902}
   lid: {fileID: 7943705570540016847}
   gameContainerTransform: {fileID: 7943705568926996413}
@@ -12756,13 +12754,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7943705570440291903}
-  m_LocalRotation: {x: 0.87950975, y: -0.00000003352761, z: 0.0000000372529, w: 0.47588086}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.87299305, y: -0.000000027939667, z: 0.000000029802312, w: 0.48773265}
+  m_LocalPosition: {x: 0, y: -0.092, z: -0.121}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7943705569943526087}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 123.16699, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 121.617004, y: 0, z: 0}
 --- !u!1 &7943705570540016844
 GameObject:
   m_ObjectHideFlags: 0
