@@ -43,7 +43,10 @@ public class DorBasketRunScore : MiniGame
     private void ResetEvent_G_Reset(object sender, EventArgs e)
     {
         foreach (var item in dorManageTool)
+        {
             item.ResetPosition();
+            item.ballGO.gameObject.GetComponent<Dorball>().IsBaseDor = false;
+        }
 
         gameContainer.Clear();
         DeactivateGame();
@@ -55,7 +58,7 @@ public class DorBasketRunScore : MiniGame
         if (!GetIsActive())
             return;
 
-        if (gameContainer.Count >= 5)
+        if (gameContainer.Count >= 3)
         {
             shootingPoint.gameObject.transform.LookAt(Player.position + shootPointOffSet);
             SetIsActive(false);
@@ -74,6 +77,7 @@ public class DorBasketRunScore : MiniGame
 
                 gameContainer.Add(other.gameObject.GetComponent<Rigidbody>());
 
+                other.gameObject.GetComponent<Dorball>().IsBaseDor = true;
                 IncreaseScoreBy(1);
 
                 other.transform.position = gameContainerTransform.position;
